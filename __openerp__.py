@@ -2,11 +2,11 @@
 {
     'name': "plastinorte",
 
-    'summary': "Plastinorte First Addon Test",
+    'summary': "Plastinorte First Addon Test 234",
 
     'description': "Plastinorte First Addon Test",
 
-    'author': "Plsatinorte S.A.S",
+    'author': "Plastinorte S.A.S",
     'website': "http://www.plastinorte.com",
 
     # Categories can be used to filter modules in modules listing
