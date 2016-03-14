@@ -1,6 +1,6 @@
 <openerp>
   <data>
-    <!-- explicit list view definition -->
+    <!-- explicit list view definition2 -->
     <!--
     <record model="ir.ui.view" id="plastinorte.list">
       <field name="name">plastinorte list</field>
