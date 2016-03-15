@@ -2,7 +2,7 @@
 {
     'name': "plastinorte",
 
-    'summary': "Plastinorte First Addon Test 2345",
+    'summary': "Plastinorte First Addon Test 23456",
 
     'description': "Plastinorte First Addon Test",
 
