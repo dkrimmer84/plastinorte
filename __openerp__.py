@@ -10,9 +10,7 @@
     'website': 'https://www.plastinorte.com',
     'summary': 'Changes made for Plastinorte S.A.S ',
     'depends': [
-        'l10n_co_point_of_sale',
-        'l10n_co_res_partner',
-        'l10n_co_tax_extension'
+        'l10n_co_point_of_sale'
     ],
     'installable': True,
 }
