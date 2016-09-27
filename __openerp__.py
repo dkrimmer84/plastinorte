@@ -1,28 +1,18 @@
 # -*- coding: utf-8 -*-
+
 {
-    'name': "plastinorte",
-
-    'summary': "Plastinorte First Addon Test 23456",
-
-    'description': "Plastinorte First Addon Test",
-
-    'author': "Plastinorte S.A.S",
-    'website': "http://www.plastinorte.com",
-
-    # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
-    # for the full list
-    'category': 'Contabilidad',
-    'version': '0.1',
-
-    # any module necessary for this one to work correctly
-    'depends': ['base'],
-
-    # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+    'name': 'Plastinorte',
+    'category': 'Localization',
+    'version': '9.0.0.1.0',
+    'author': 'Dominic Krimmer, Plastinorte S.A.S',
+    'license': 'AGPL-3',
+    'maintainer': 'dominic.krimmer@gmail.com',
+    'website': 'https://www.plastinorte.com',
+    'summary': 'Changes made for Plastinorte S.A.S ',
+    'depends': [
+        'l10n_co_point_of_sale',
+        'l10n_co_res_partner',
+        'l10n_co_tax_extension'
     ],
     'installable': True,
 }
