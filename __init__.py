@@ -2,3 +2,4 @@
 
 from . import controllers
 from . import models
+import point_of_sale
