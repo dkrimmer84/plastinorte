@@ -13,4 +13,8 @@
         'l10n_co_point_of_sale'
     ],
     'installable': True,
+    'data': [
+        'views/product.xml',
+        'views/category.xml'
+    ],
 }
