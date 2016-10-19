@@ -107,3 +107,17 @@ class PrefixCategory(models.Model):
     _inherit = 'product.category'
 
     consecutive = fields.Char("Consecutivo Prefijo")
+
+
+class ProductName(models.Model):
+    """
+    Many people have the bad habit in writing everyting in uppercase (HATE IT!)
+    Here we are making product names more beautiful:
+    e.j. MY PRODUCT NAME => My Product Name
+    """
+    _name = 'product.template'
+    _inherit = 'product.template'
+
+    @api.onchange('name')
+    def onchange_product_name(self):
+        self.name = self.name.title() if self.name else ''
