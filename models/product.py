@@ -121,3 +121,16 @@ class ProductName(models.Model):
     @api.onchange('name')
     def onchange_product_name(self):
         self.name = self.name.title() if self.name else ''
+
+
+class CheckUniqueRef(models.Model):
+    _name = 'product.product'
+    _inherit = 'product.product'
+
+    # Internal reference field has to be unique,
+    # therefore a constraint will validate it:
+    _sql_constraints = [
+        ('default_unique',
+         'UNIQUE(default_code)',
+         "La Referencia interna debe ser única!")
+    ]
