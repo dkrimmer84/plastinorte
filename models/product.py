@@ -52,8 +52,8 @@ class Consecutive(models.Model):
                                default_code FROM product_product \
                                WHERE \
                                default_code LIKE %s \
-                               ORDER BY \
-                               default_code desc LIMIT %s",
+                               ORDER BY substring(default_code, '\d+')::int \
+                               DESC NULLS FIRST LIMIT %s",
                                (rec.consecutive+'%', 1))
 
                     result = cr.dictfetchall()
