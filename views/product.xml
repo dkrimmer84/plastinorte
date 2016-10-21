@@ -10,8 +10,24 @@
                 <field name ="categ_id" position="replace">
                     <field name="categ_id" on_change="onchange_category(categ_id, change_category)"/>
                 </field>
-                <field name="categ_id" position="after">
-                    <field name="change_category" />
+
+                <field name ="default_code" position="replace">
+                    <field name="default_code"
+                           required="True"
+                           placeholder="Se llena automático con la categoría!"
+                           attrs="{'invisible':[('default_code', '=', False)]}" />
+                </field>
+
+                <field name="categ_id" position="before">
+                    <field name="change_category"/>
+                </field>
+
+                <field name="default_code" position="after">
+                    <field name="check_default_code" invisible="True" />
+                </field>
+
+                <field name="check_default_code" position="after">
+                    <field name="helper_check_default_code" invisible="True"/>
                 </field>
 
 

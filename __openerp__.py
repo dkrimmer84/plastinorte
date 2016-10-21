@@ -10,7 +10,8 @@
     'website': 'https://www.plastinorte.com',
     'summary': 'Changes made for Plastinorte S.A.S ',
     'depends': [
-        'l10n_co_point_of_sale'
+        'point_of_sale',
+        'stock'
     ],
     'installable': True,
     'data': [

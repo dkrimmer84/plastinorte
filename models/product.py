@@ -27,6 +27,8 @@ class Consecutive(models.Model):
     _inherit = 'product.template'
 
     change_category = fields.Boolean(string="Cambiar referencia interna?", default=True)
+    check_default_code = fields.Char("Check Default Code")
+    helper_check_default_code = fields.Char("Helper Default Code")
 
     def onchange_category(self, cr, uid, ids, catid=False, change_cat=False, context=True):
         """
@@ -78,7 +80,8 @@ class Consecutive(models.Model):
                         else:
                             return False
 
-                    return {'value': {'default_code': new_consecutive}}
+                    return {'value': {'default_code': new_consecutive,
+                                      'helper_check_default_code': new_consecutive}}
 
     @staticmethod
     def increase_consecutive(last_consecutive=False):
@@ -95,6 +98,30 @@ class Consecutive(models.Model):
                            str(sep[1]) + '-' + \
                            str((int(sep[2])+1))
         return False
+
+    @api.onchange('default_code')
+    def _helper_check_default_code(self):
+        if self.change_category:
+            self.check_default_code = self.default_code
+
+    @api.constrains('check_default_code', 'helper_check_default_code')
+    def _check_default_code(self):
+        if self.change_category:
+            # raise exceptions.ValidationError(self.check_default_code)
+            if self.check_default_code != self.helper_check_default_code:
+                raise exceptions.ValidationError(
+                    "La Referencia que puso no esta conforme a la logica. "
+                    "Porfavor escoga una categoria y la referencia se genera "
+                    "automatico.")
+
+    @api.onchange('change_category')
+    def _on_change_category(self):
+        if self.change_category is False:
+            self.check_default_code = ""
+            self.helper_check_default_code = ""
+        else:
+            self.helper_check_default_code = "1"
+
 
 
 class PrefixCategory(models.Model):
