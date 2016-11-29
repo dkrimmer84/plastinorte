@@ -111,7 +111,7 @@ class Consecutive(models.Model):
             if self.check_default_code != self.helper_check_default_code:
                 raise exceptions.ValidationError(
                     "Pusiste una referencia que no es conforme a la categoria."
-                    "Por favor, escoja una categoría y la referencia se genera"
+                    " Por favor, escoja una categoría y la referencia se genera"
                     " automático.")
 
     @api.onchange('change_category')
