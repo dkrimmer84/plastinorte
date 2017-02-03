@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="cash_box_out_form_inherit" model="ir.ui.view">
+            <field name="name">cash.box.out.form.inherit</field>
+            <field name="model">cash.box.out</field>
+            <field name="inherit_id" ref="account.cash_box_out_form"/>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="amount" position="before">
+                        <field name="product_expenses"/>
+                    </field>
+                </data>
+            </field>
+        </record>
+    </data>
+</openerp>

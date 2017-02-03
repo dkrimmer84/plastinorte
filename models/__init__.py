@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
-
-from . import models
-from . import product
+import models
+import product
+import pos_box

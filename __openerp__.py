@@ -11,11 +11,13 @@
     'summary': 'Changes made for Plastinorte S.A.S ',
     'depends': [
         'point_of_sale',
-        'stock'
+        'stock',
+        'account'
     ],
     'installable': True,
     'data': [
         'views/product.xml',
+        'wizard/pos_box.xml',
         'views/category.xml'
     ],
 }
