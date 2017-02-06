@@ -13,7 +13,8 @@
         'point_of_sale',
         'stock',
         'account',
-        'hr_expense'
+        'hr_expense',
+        'hr'
     ],
     'installable': True,
     'data': [
