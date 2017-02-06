@@ -67,6 +67,5 @@ class inherit_PosBoxOut(CashBox):
             if res_expense:
                 res_expense.tax_ids = res.product_expenses.supplier_taxes_id
             
-        
         return res  
 
