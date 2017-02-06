@@ -29,28 +29,44 @@ class inherit_PosBoxOut(CashBox):
     _name = 'cash.box.out'
     _inherit = 'cash.box.out'
 
-    product_expenses = fields.Many2one('product.product', 'Expenses', required=True)
+    product_expenses = fields.Many2one('product.product', 'Expenses', required=True, domain = [('can_be_expensed', '=', True)])
+
+    @api.onchange('product_expenses') 
+    def on_product_expenses(self):
+        if self.product_expenses:
+            self.name = self.product_expenses.name
+
 
     @api.model
     def create(self, values):   
 
         res = super(inherit_PosBoxOut, self).create(values)
-
-
         if res:
+            model_hr_employee = self.env['hr.employee']
+            model_pos_session = self.env['pos.session']
             model_hr_expenses = self.env['hr.expense']
-            model_hr_expenses.create({
+            model_account_journal = self.env['account.journal']
+
+            query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])            
+            active_id = self.env.context.get('active_id')
+            pos = model_pos_session.search([('id', '=' , active_id)])
+            account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Efectivo')], limit = 1)
+            
+            
+            res_expense = model_hr_expenses.create({
                 'name' : res.name,
                 'product_id' : res.product_expenses.id,
                 'unit_amount' : res.amount,
                 'quantity' : 1,
-                'employee_id' : self.env.uid,
-                'tax_ids' : res.product_expenses.supplier_taxes_id,
+                'employee_id' : query.id if query else False,
                 'payment_mode' : 'company_account',
-                'bank_journal_id' : 5,
-                'state' : 'submit'
+                'bank_journal_id' : account_journal_id.id if account_journal_id else False,
+                'state' : 'submit',
+                'description' : pos.config_id.name if pos else False
                 })
-            pass
+            if res_expense:
+                res_expense.tax_ids = res.product_expenses.supplier_taxes_id
+            
         
         return res  
 

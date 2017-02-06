@@ -9,6 +9,10 @@
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
                 <data>
+                    <xpath expr="//field[@name='name']" position="attributes">
+                        <attribute name="invisible">1</attribute>
+                    </xpath>
+
                     <field name="amount" position="before">
                         <field name="product_expenses"/>
                     </field>
