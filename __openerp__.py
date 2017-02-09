@@ -12,7 +12,9 @@
     'depends': [
         'point_of_sale',
         'stock',
-        'account'
+        'account',
+        'hr_expense',
+        'hr'
     ],
     'installable': True,
     'data': [
