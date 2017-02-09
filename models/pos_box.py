@@ -61,7 +61,7 @@ class inherit_PosBoxOut(CashBox):
                 'employee_id' : query.id if query else False,
                 'payment_mode' : 'company_account',
                 'bank_journal_id' : account_journal_id.id if account_journal_id else False,
-                'state' : 'submit',
+                'state' : 'draft',
                 'description' : pos.config_id.name if pos else False
                 })
             if res_expense:
