@@ -50,7 +50,7 @@ class inherit_PosBoxOut(CashBox):
             query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])            
             active_id = self.env.context.get('active_id')
             pos = model_pos_session.search([('id', '=' , active_id)])
-            account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Efectivo')], limit = 1)
+            account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Control')], limit = 1)
             
             
             res_expense = model_hr_expenses.create({
@@ -61,7 +61,7 @@ class inherit_PosBoxOut(CashBox):
                 'employee_id' : query.id if query else False,
                 'payment_mode' : 'company_account',
                 'bank_journal_id' : account_journal_id.id if account_journal_id else False,
-                'state' : 'submit',
+                'state' : 'draft',
                 'description' : pos.config_id.name if pos else False
                 })
             if res_expense:
