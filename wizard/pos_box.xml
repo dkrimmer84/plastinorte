@@ -13,11 +13,31 @@
                         <attribute name="invisible">1</attribute>
                     </xpath>
 
-                    <field name="amount" position="before">
+                    <field name="name" position="before">
                         <field name="product_expenses"/>
+                        <field name="partner_id"/>
+                        <field name="reason"/>
+                        <field name="nroinvoice"/>
                     </field>
                 </data>
             </field>
         </record>
+        <record id="hr_expense_form_view_inherit" model="ir.ui.view">
+            <field name="name">hr_expense_form_view</field>
+            <field name="model">hr.expense</field>
+            <field name="inherit_id" ref="hr_expense.hr_expense_form_view"/>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='account_move_id']" position="after">
+                         <field name="provider_id"/>
+                         <field name="reason"/>
+                         <field name="nroinvoice"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
     </data>
 </openerp>

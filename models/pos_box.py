@@ -30,7 +30,10 @@ class inherit_PosBoxOut(CashBox):
     _inherit = 'cash.box.out'
 
     product_expenses = fields.Many2one('product.product', 'Expenses', required=True, domain = [('can_be_expensed', '=', True)])
-
+    partner_id = fields.Many2one('res.partner', 'Provider')
+    nroinvoice = fields.Char('Number Invoice')
+    reason = fields.Char('Reason')
+    
     @api.onchange('product_expenses') 
     def on_product_expenses(self):
         if self.product_expenses:
@@ -39,7 +42,6 @@ class inherit_PosBoxOut(CashBox):
 
     @api.model
     def create(self, values):   
-
         res = super(inherit_PosBoxOut, self).create(values)
         if res:
             model_hr_employee = self.env['hr.employee']
@@ -62,10 +64,23 @@ class inherit_PosBoxOut(CashBox):
                 'payment_mode' : 'company_account',
                 'bank_journal_id' : account_journal_id.id if account_journal_id else False,
                 'state' : 'draft',
-                'description' : pos.config_id.name if pos else False
+                'provider_id' : res.partner_id.id if res.partner_id else False,
+                'nroinvoice' : res.nroinvoice if res.nroinvoice else False,
+                'reason' : res.reason if res.reason else False,
+                'description' : pos.config_id.name if pos else False,
                 })
             if res_expense:
                 res_expense.tax_ids = res.product_expenses.supplier_taxes_id
             
         return res  
+
+class inherit_hr_expense(models.Model):
+    _name = 'hr.expense'
+    _inherit = 'hr.expense'
+   
+    provider_id = fields.Many2one('res.partner', 'Proveedor')
+    nroinvoice = fields.Char('Number Invoice')
+    reason = fields.Char('Reason')
+
+
 
