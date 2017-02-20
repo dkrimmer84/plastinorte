@@ -14,12 +14,14 @@
         'stock',
         'account',
         'hr_expense',
-        'hr'
+        'hr',
+	'fleet'
     ],
     'installable': True,
     'data': [
         'views/product.xml',
         'wizard/pos_box.xml',
-        'views/category.xml'
+        'views/category.xml',
+	'views/fleet.xml'
     ],
 }
