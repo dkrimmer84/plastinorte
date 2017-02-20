@@ -65,10 +65,11 @@ class pos_order(osv.osv):
                 picking_obj.action_confirm(cr, uid, [picking_id], context=context)
                 picking_obj.force_assign(cr, uid, [picking_id], context=context)
                 # Mark pack operations as done
-                #pick = picking_obj.browse(cr, uid, picking_id, context=context)
-                #for pack in pick.pack_operation_ids:
-                    #self.pool['stock.pack.operation'].write(cr, uid, [pack.id], {'qty_done': pack.product_qty}, context=context)
-                #picking_obj.action_done(cr, uid, [picking_id], context=context)
+                pick = picking_obj.browse(cr, uid, picking_id, context=context)
+                for pack in pick.pack_operation_ids:
+                    self.pool['stock.pack.operation'].write(cr, uid, [pack.id], {'qty_done': pack.product_qty}, context=context)
+                picking_obj.action_done(cr, uid, [picking_id], context=context)
+                # end packing
             elif move_list:
                 move_obj.action_confirm(cr, uid, move_list, context=context)
                 move_obj.force_assign(cr, uid, move_list, context=context)
