@@ -24,6 +24,12 @@
 		<field name="car_value" position="after">
                     <field name="comments" />
                 </field>
+                <field name="transmission" position="after">
+                    <field name="cilindraje" />
+                </field>
+                <field name="fuel_type" position="before">
+                    <field name="motor" />
+                </field>
             </field>
         </record>
     </data>
