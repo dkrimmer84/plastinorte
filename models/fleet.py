@@ -47,4 +47,5 @@ class Fleet(models.Model):
         ], "Tipo de vehiculo"
     )
     comments = fields.Text("Comentarios")
-    test = fields.Char("ping") 
+    cilindraje = fields.Char("Cilindraje")
+    motor = fields.Char("Motor")
