@@ -22,6 +22,8 @@
         'views/product.xml',
         'wizard/pos_box.xml',
         'views/category.xml',
+        'views/register_expense.xml',
+
 	'views/fleet.xml'
     ],
 }
