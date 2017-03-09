@@ -25,8 +25,14 @@
           <field eval="1" name="priority"/>
           <field name="arch" type="xml">
               <data>
-                  <xpath expr="//button[@name='cashbox_control']" position="after">
-                      <button name="expense_control" type="object" string="Registrar Gasto" class="oe_highlight"/>
+                  <xpath expr="//button[@name='446']" position="after">
+                    <button class="oe_stat_button" name="expense_control" type="object" icon="fa-level-up" attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened', 'closing_control'])]}">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_text">Registrar</span>
+                            <span class="o_stat_text">Gasto</span>
+                        </div>
+                    </button>
+                    
                   </xpath>
               </data>
           </field>
