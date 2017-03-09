@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="register_expense_form">
+            <field name="name">hr.expense</field>
+            <field name="model">hr.expense</field>
+            <field name="arch" type="xml">
+                <form string="Register Expense">
+                    <separator string="Describe why you take money from the cash register:"/>
+                    <group>
+                        <field name="state" invisible="1"/>
+                        <field name="name"/>
+                        <field name="product_id"/>
+                        <field name="provider_id"/>
+                        <field name="nroinvoice"/>
+                        <field name="reason"/>
+                        <field name="unit_amount"/>
+                        
+                    </group>
+
+                    <footer>
+                        <button name="register_expense" string="Register Expense" type="object" class="btn-primary"/>
+                        <button class="btn-default" special="cancel" string="Cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
+        <!--<record id="action_register_expense" model="ir.actions.act_window">
+            <field name="name">Register Expense</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.expense</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field> 
+        </record>-->
