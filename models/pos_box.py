@@ -65,6 +65,8 @@ class inherit_hr_expense(models.Model):
         account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Control')], limit = 1)
         query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])   
 
+
+
         self.write({
             'description' : pos.config_id.name if pos else False,
             'payment_mode' : 'company_account',
@@ -73,35 +75,7 @@ class inherit_hr_expense(models.Model):
             'department_id' : query.department_id.id
             })
 
-        """model_hr_employee = self.env['hr.employee']
-        model_pos_session = self.env['pos.session']
-        model_hr_expenses = self.env['hr.expense']
-        model_account_journal = self.env['account.journal']
-
-        query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])            
-        active_id = self.env.context.get('active_id')
-        pos = model_pos_session.search([('id', '=' , active_id)])
-        account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Control')], limit = 1)
         
-        
-        res_expense = model_hr_expenses.create({
-            'name' : res.name,
-            'product_id' : res.product_expenses.id,
-            'unit_amount' : res.amount,
-            'quantity' : 1,
-            'employee_id' : query.id if query else False,
-            'payment_mode' : 'company_account',
-            'bank_journal_id' : account_journal_id.id if account_journal_id else False,
-            'state' : 'draft',
-            'provider_id' : res.partner_id.id if res.partner_id else False,
-            'nroinvoice' : res.nroinvoice if res.nroinvoice else False,
-            'reason' : res.reason if res.reason else False,
-            'description' : pos.config_id.name if pos else False,
-            })
-        if res_expense:
-            res_expense.tax_ids = res.product_expenses.supplier_taxes_id"""
-            
-
 class pos_session(models.Model):
     _name = 'pos.session'
     _inherit = 'pos.session'

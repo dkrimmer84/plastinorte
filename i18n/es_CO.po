@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 9.0c-20161205\n"
+"Project-Id-Version: Odoo Server 9.0c-20160606\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-16 15:30+0000\n"
-"PO-Revision-Date: 2017-02-16 15:30+0000\n"
+"POT-Creation-Date: 2017-03-09 19:25+0000\n"
+"PO-Revision-Date: 2017-03-09 19:25+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,9 +16,31 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: plastinorte
+#: model:ir.ui.view,arch_db:plastinorte.view_pos_session_form_inherit
+msgid "<span class=\"o_stat_text\">Registrar</span>\n"
+"                            <span class=\"o_stat_text\">Gasto</span>"
+msgstr "<span class=\"o_stat_text\">Registrar</span>\n"
+"                            <span class=\"o_stat_text\">Gasto</span>"
+
+#. module: plastinorte
+#: selection:fleet.vehicle,cartype:0
+msgid "Automóvil"
+msgstr "Automóvil"
+
+#. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_product_available_in_pos
 msgid "Available in the Point of Sale"
 msgstr "Disponible en el Punto de Venta"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_modelo
+msgid "Año de Fabricación"
+msgstr "Año de Fabricación"
+
+#. module: plastinorte
+#: selection:fleet.vehicle,cartype:0
+msgid "Bicicleta"
+msgstr "Bicicleta"
 
 #. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_product_change_category
@@ -27,9 +49,24 @@ msgid "Cambiar referencia interna?"
 msgstr "Cambiar referencia interna?"
 
 #. module: plastinorte
+#: selection:fleet.vehicle,cartype:0
+msgid "Camioneta"
+msgstr "Camioneta"
+
+#. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_product_can_be_expensed
 msgid "Can be expensed"
 msgstr "Puede ser gastado"
+
+#. module: plastinorte
+#: model:ir.ui.view,arch_db:plastinorte.register_expense_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_accidentes
+msgid "Cantidad de Accidentes"
+msgstr "Cantidad de Accidentes"
 
 #. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_product_check_default_code
@@ -48,9 +85,24 @@ msgid "Check if you want this product to appear in the Point of Sale"
 msgstr "Marque esta casilla si quiere que este producto aparezca en el Punto de Venta"
 
 #. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_cilindraje
+msgid "Cilindraje"
+msgstr "Cilindraje"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_comments
+msgid "Comentarios"
+msgstr "Comentarios"
+
+#. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_category_consecutive
 msgid "Consecutivo Prefijo"
 msgstr "Consecutivo Prefijo"
+
+#. module: plastinorte
+#: model:ir.ui.view,arch_db:plastinorte.register_expense_form
+msgid "Describe why you take money from the cash register:"
+msgstr "Indique por qué retira dinero de la caja registradora:"
 
 #. module: plastinorte
 #: model:ir.model,name:plastinorte.model_hr_expense
@@ -63,9 +115,9 @@ msgid "Expense Invoice Policy"
 msgstr "Política de Facturación de Gastos"
 
 #. module: plastinorte
-#: model:ir.model.fields,field_description:plastinorte.field_cash_box_out_product_expenses
-msgid "Expenses"
-msgstr "Producto Relacionado"
+#: model:ir.ui.view,arch_db:plastinorte.register_expense_form
+msgid "Gasto"
+msgstr "Gasto"
 
 #. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_product_helper_check_default_code
@@ -79,12 +131,46 @@ msgid "If you invoice at cost, the expense will be invoiced on the sale order at
 msgstr "Si factura al costo, el gasto será facturado en la orden de venta al costo de la línea analítica; en cambio, si factura a precio de venta, el precio del producto será usado."
 
 #. module: plastinorte
+#: model:ir.model,name:plastinorte.model_fleet_vehicle
+msgid "Information on a vehicle"
+msgstr "Información en un vehículo"
+
+#. module: plastinorte
 #: sql_constraint:product.product:0
 msgid "La Referencia interna debe ser única!"
 msgstr "La Referencia interna debe ser única!"
 
 #. module: plastinorte
-#: model:ir.model.fields,field_description:plastinorte.field_cash_box_out_nroinvoice
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_licencia_categoria
+msgid "Licencia Categoria"
+msgstr "Licencia Categoria"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_licencia_conductor
+msgid "Licencia Conductor"
+msgstr "Licencia Conductor"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_licencia_transito
+msgid "Licencia Transito"
+msgstr "Licencia Transito"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_accidentes_motivos
+msgid "Motivos de los accidentes"
+msgstr "Motivos de los accidentes"
+
+#. module: plastinorte
+#: selection:fleet.vehicle,cartype:0
+msgid "Moto"
+msgstr "Moto"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_motor
+msgid "Motor"
+msgstr "Motor"
+
+#. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_hr_expense_nroinvoice
 msgid "Number Invoice"
 msgstr "Número de Factura"
@@ -120,15 +206,19 @@ msgid "Proveedor"
 msgstr "Proveedor"
 
 #. module: plastinorte
-#: model:ir.model.fields,field_description:plastinorte.field_cash_box_out_partner_id
-msgid "Provider"
-msgstr "Proveedor"
-
-#. module: plastinorte
-#: model:ir.model.fields,field_description:plastinorte.field_cash_box_out_reason
 #: model:ir.model.fields,field_description:plastinorte.field_hr_expense_reason
 msgid "Reason"
 msgstr "Razón"
+
+#. module: plastinorte
+#: model:ir.ui.view,arch_db:plastinorte.register_expense_form
+msgid "Register Expense"
+msgstr "Registrar Gasto"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_soat
+msgid "SOAT"
+msgstr "SOAT"
 
 #. module: plastinorte
 #: model:ir.ui.view,arch_db:plastinorte.product_template_only_form_view_dkr
@@ -146,12 +236,37 @@ msgid "Those categories are used to group similar products for point of sale."
 msgstr "Esas categorías se usan para agrupar productos similares para el punto de venta."
 
 #. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_cartype
+msgid "Tipo de vehiculo"
+msgstr "Tipo de vehiculo"
+
+#. module: plastinorte
 #: model:ir.model.fields,field_description:plastinorte.field_product_product_to_weight
 msgid "To Weigh With Scale"
 msgstr "Para Pesar Con Balanza"
 
 #. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_vigencia_tecnomecanica
+msgid "Vigencia Tecnomecanica"
+msgstr "Vigencia Tecnomecanica"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_vigencia_licencia
+msgid "Vigencia de Licencia"
+msgstr "Vigencia de Licencia"
+
+#. module: plastinorte
+#: model:ir.model.fields,field_description:plastinorte.field_fleet_vehicle_vigencia_del_impuesto
+msgid "Vigencia del Impuesto"
+msgstr "Vigencia del Impuesto"
+
+#. module: plastinorte
 #: model:ir.model,name:plastinorte.model_cash_box_out
 msgid "cash.box.out"
 msgstr "cash.box.out"
+
+#. module: plastinorte
+#: model:ir.model,name:plastinorte.model_pos_session
+msgid "pos.session"
+msgstr "pos.session"
 
