@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <record model="ir.ui.view" id="register_expense_form">
-            <field name="name">hr.expense</field>
+        <record model="ir.ui.view" id="register_expense_form_control">
+            <field name="name">hr_expense_form</field>
             <field name="model">hr.expense</field>
+            <field eval="27" name="priority"/>
             <field name="arch" type="xml">
                 <form string="Register Expense">
                     <separator string="Describe why you take money from the cash register:"/>
@@ -25,6 +26,7 @@
                 </form>
             </field>
         </record>
+
     </data>
 </openerp>
         <!--<record id="action_register_expense" model="ir.actions.act_window">
