@@ -81,9 +81,9 @@ class pos_session(models.Model):
     _inherit = 'pos.session'
    
     @api.multi
-    def expense_control(self, values):
+    def expense_control_session(self, values):
 
-        view_ref = self.env['ir.model.data'].get_object_reference('plastinorte', 'register_expense_form')
+        view_ref = self.env['ir.model.data'].get_object_reference('plastinorte', 'register_expense_form_control')
         view_id = view_ref[ 1 ] if view_ref else False
 
         return {
