@@ -67,16 +67,16 @@ class inherit_hr_expense(models.Model):
         account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Control')], limit = 1)
         query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])   
 
-
         self.write({
             'description' : pos.config_id.name if pos else False,
             'payment_mode' : 'company_account',
             'bank_journal_id' : account_journal_id.id if account_journal_id else False,
             'employee_id' : query.id if query else False,
-            'department_id' : query.department_id.id,
-            'tax_ids' : taxes[0].supplier_taxes_id.id
-
+            'department_id' : query.department_id.id
             })
+
+        self.tax_ids = taxes[0].supplier_taxes_id
+ 
 
         
 class pos_session(models.Model):
