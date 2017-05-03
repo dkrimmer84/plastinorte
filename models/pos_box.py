@@ -58,14 +58,14 @@ class inherit_hr_expense(models.Model):
         model_pos_session = self.env['pos.session']   
         model_account_journal = self.env['account.journal']
         model_hr_employee = self.env['hr.employee']
+        taxes_model = self.env['product.product']
 
 
         active_id = self.env.context.get('active_id')
+        taxes = taxes_model.search([('id', '=', self.product_id.id)], limit = 1)
         pos = model_pos_session.search([('id', '=' , active_id)])
         account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Control')], limit = 1)
         query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])   
-
-
 
         self.write({
             'description' : pos.config_id.name if pos else False,
@@ -75,15 +75,18 @@ class inherit_hr_expense(models.Model):
             'department_id' : query.department_id.id
             })
 
+        self.tax_ids = taxes[0].supplier_taxes_id
+ 
+
         
 class pos_session(models.Model):
     _name = 'pos.session'
     _inherit = 'pos.session'
    
     @api.multi
-    def expense_control(self, values):
+    def expense_control_session(self, values):
 
-        view_ref = self.env['ir.model.data'].get_object_reference('plastinorte', 'register_expense_form')
+        view_ref = self.env['ir.model.data'].get_object_reference('plastinorte', 'register_expense_form_control')
         view_id = view_ref[ 1 ] if view_ref else False
 
         return {

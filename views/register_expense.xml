@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
     <data>
-        <record model="ir.ui.view" id="register_expense_form">
-            <field name="name">hr.expense</field>
+        <record model="ir.ui.view" id="register_expense_form_control">
+            <field name="name">hr_expense_form</field>
             <field name="model">hr.expense</field>
+            <field eval="27" name="priority"/>
             <field name="arch" type="xml">
                 <form string="Register Expense">
                     <separator string="Describe why you take money from the cash register:"/>
@@ -11,7 +12,7 @@
                         <field name="state" invisible="1"/>
                         <field name="name" invisible="1"/>
                         <field name="product_id" string="Gasto"/>
-                        <field name="provider_id"/>
+                        <field name="provider_id" domain="[('supplier','=',True)]"/>
                         <field name="nroinvoice"/>
                         <field name="reason"/>
                         <field name="unit_amount"/>
@@ -25,6 +26,7 @@
                 </form>
             </field>
         </record>
+
     </data>
 </openerp>
         <!--<record id="action_register_expense" model="ir.actions.act_window">
