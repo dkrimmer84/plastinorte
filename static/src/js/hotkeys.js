@@ -51,6 +51,30 @@ odoo.define('plastinorte', function (require) {
 					        _super_posmodel.eventReturn();
 		                }
 		            });
+
+        			Mousetrap.bindGlobal('esc', function(){
+        				console.log('Nuevos eventos esc');
+
+						if($('.popup-password').is(":visible")){
+			    			var cancel = $('div.popup-password > div.centered > .cancel');
+							cancel.click();
+							return;
+
+			    		}
+
+			    		if($('.popup-confirm').is(":visible")){
+			    			return;
+			    		}
+
+						if( $('.back').is(":visible") ){
+							$('.back').click();
+
+							return;
+						}
+
+					});
+
+
 	        	} else {
 	        		this.pos.get_order().add_paymentline( cashregister );
 			        this.reset_input();
