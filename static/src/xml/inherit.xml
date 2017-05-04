@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="point_of_sale_hotkeys_inherit" xml:space="preserve">
+
+     <!--<t t-name="ProductCategoriesWidget">
+
+        <t t-jquery="div[class=searchbox]" t-operation="replace">
+            <div class="searchbox">
+                <input placeholder="Search Products" class=""/>
+                <span class="search-clear"></span>
+            </div>
+        </t>
+        
+    </t>-->
+
+  
+</templates>
+
+
+
+
