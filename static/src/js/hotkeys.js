@@ -36,8 +36,8 @@ odoo.define('plastinorte', function (require) {
 	        		Mousetrap.unbind('return');
 
         			this.gui.show_popup('confirm',{
-		                title: _t('Control de Pago'),
-		                body: 'Esta seguro que quiere realizar una venta con ' + cashregister.journal_id[ 1 ],
+		                title: _t('Esta seguro que quiere realizar una venta con:'),
+		                body: cashregister.journal_id[ 1 ] + " ?",
 		                confirm: function() {
 		                    self.pos.get_order().add_paymentline( cashregister );
 					        self.reset_input();
