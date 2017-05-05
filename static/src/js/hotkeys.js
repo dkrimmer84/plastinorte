@@ -45,6 +45,8 @@ odoo.define('plastinorte', function (require) {
 
 					        var _super_posmodel = models.PosModel.prototype;
 					        _super_posmodel.eventReturn();
+
+					        $('.paymentmethod').removeClass('payment_selected');
 		                },
 		                cancel : function(){
 		                	var _super_posmodel = models.PosModel.prototype;
