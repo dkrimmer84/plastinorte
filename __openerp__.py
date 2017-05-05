@@ -24,7 +24,9 @@
         'views/category.xml',
         'views/register_expense.xml',
         'views/scripts.xml',
-
-	'views/fleet.xml'
+	    'views/fleet.xml'
+    ],
+    'qweb': [
+        "static/src/xml/inherit.xml",
     ],
 }

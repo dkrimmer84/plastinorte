@@ -53,7 +53,6 @@ odoo.define('plastinorte', function (require) {
 		            });
 
         			Mousetrap.bindGlobal('esc', function(){
-        				console.log('Nuevos eventos esc');
 
 						if($('.popup-password').is(":visible")){
 			    			var cancel = $('div.popup-password > div.centered > .cancel');
@@ -89,47 +88,84 @@ odoo.define('plastinorte', function (require) {
 		}
 	});
 
-	/*var _super_posmodel = models.PosModel.prototype;
+	var _super_posmodel = models.PosModel.prototype;
 	models.PosModel = models.PosModel.extend({
+		cashregisters2 : undefined,
+
 		initialize: function(session, attributes) {
 	    	var self = this;
 	    	_super_posmodel.initialize.call(this,session,attributes);
 
-	    	console.log('La herenciaaaaaaaa');
-
-	    	$(document).ready(function(){
-				Mousetrap.bindGlobal('esc', function(){
-		    		console.log('Escapeeeee');
-		    	});
-
-			});
-	    	
-	    	
-
-	    }
-
-	});*/
-
-	/*Screens.PaymentScreenWidget = Screens.PaymentScreenWidget.extend({
-		click_paymentmethods : function(){
-			console.log('Herencia...');
-		}
-	});*/
-
-
-	/*console.log('ENTRA TESTTTTTT', Screens);
-
-	var _super_posmodel = models.PosModel.prototype;
-	models.PosModel = models.PosModel.extend({
-	    initialize: function(session, attributes) {
-	    	var self = this;
-	    	_super_posmodel.initialize.call(this,session,attributes);
-	    	
-
-
 	    },
 
-	});*/
+	    eventReturn : function(){
+	    	var self = this;
+
+	    	Mousetrap.bindGlobal('return', function( e ){
+				if($('.popup-password').is(":visible")){
+	    			var confirm = $('div.popup-password > div.centered > .confirm');
+					confirm.click();
+					return;
+
+	    		}
+
+
+				if( ! $('.next').is(":visible") ){
+					if( $('.searchbox > input').is(":focus") ){
+						$('.searchbox > input').blur();
+					} else {
+						
+
+						var product_selected = $('.product').hasClass('product_selected');
+
+						if( product_selected ){
+							$('.product.product_selected').click();
+							$('.product').removeClass('product_selected');
+
+							return;
+						}
+
+					}
+					
+				} else {
+
+					if($('.print').is(":visible")){
+						$('.next').click();
+						return;
+					}
+
+					var payment_selected = $('.payment_selected');
+					if( payment_selected.length > 0 ){
+						
+
+						var payment_type = payment_selected.data('type');
+
+        				if( payment_type  != 'cash' ){
+        					e.preventDefault();
+        					return;
+        				} else {
+        					payment_selected.click();
+        					$('.paymentmethod').removeClass('payment_selected');
+							e.preventDefault();
+							return;
+        				}
+
+	        			
+
+	        			
+				        
+
+						
+					}
+			
+				}
+
+
+
+			});
+	    },
+
+	});
 
 
  });

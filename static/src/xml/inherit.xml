@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<templates id="point_of_sale_hotkeys_inherit" xml:space="preserve">
+<templates id="plastinorte_inherits" xml:space="preserve">
 
-     <!--<t t-name="ProductCategoriesWidget">
+	<t t-extend="PaymentScreen-Paymentmethods">
+		<t t-jquery="div[class='paymentmethods']" t-operation="replace">
+			<div class='paymentmethods'>
+	            <t t-foreach="widget.pos.cashregisters" t-as="cashregister">
+	                <div class="button paymentmethod" t-att-data-id="cashregister.journal_id[0]" t-att-data-type="cashregister.journal.type">
+	                    <t t-esc="cashregister.journal_id[1]" />
+	                </div>
+	            </t>
+	        </div>
+		</t>
 
-        <t t-jquery="div[class=searchbox]" t-operation="replace">
-            <div class="searchbox">
-                <input placeholder="Search Products" class=""/>
-                <span class="search-clear"></span>
-            </div>
-        </t>
         
-    </t>-->
+
+    </t>
+
+
 
   
 </templates>
