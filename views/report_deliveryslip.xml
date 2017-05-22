@@ -1,0 +1,38 @@
+<odoo>
+    <template id="report_delivery_document2" inherit_id="stock.report_delivery_document">
+	<xpath expr="//h2[1]" position="before">
+		<br /><br />
+	</xpath>
+	<xpath expr="//div[@class='col-xs-6']" position="replace">
+		<div class="col-xs-3" style="float:right;">
+                            <div>
+                                <span><strong>Dirección del Cliente:</strong></span>
+                            </div>
+                            <div t-if="o.move_lines and o.move_lines[0].partner_id" name="partner_header">
+                                <div t-field="o.move_lines[0].partner_id"
+                                   t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                            </div>
+                            <div t-if="not (o.move_lines and o.move_lines[0].partner_id) and o.partner_id" name="partner_header">
+                                <div t-field="o.partner_id"
+                                   t-field-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": false}'/>
+                            </div>
+                        </div>
+	</xpath>
+
+        <xpath expr="//table[3]" position="after">
+
+	    <div style="border:0; height:100px; width:100%; margin:auto;padding:50px 0 0 0;">
+
+		<div id="pn-left" style="float:left; width:300px;border-bottom:1px solid black; margin-right:100px;">
+			<p>Entregado por:</p>
+		</div>
+		<div id="pn-right" style="float:left; width:300px;border-bottom:1px solid black;margin-right:100px;">
+			<p>Autorizado por:</p>
+		</div>
+		<div id="pn-right" style="float:left; width:300px;border-bottom:1px solid black">
+			<p>Recibido por:</p>
+		</div>
+		 </div>
+        </xpath>
+    </template>
+</odoo>
