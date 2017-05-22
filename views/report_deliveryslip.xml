@@ -1,8 +1,5 @@
 <odoo>
     <template id="report_delivery_document2" inherit_id="stock.report_delivery_document">
-	<xpath expr="//h2[1]" position="before">
-		<br /><br />
-	</xpath>
 	<xpath expr="//div[@class='col-xs-6']" position="replace">
 		<div class="col-xs-4" style="float:right;">
                             <div>
