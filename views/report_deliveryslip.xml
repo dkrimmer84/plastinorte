@@ -4,7 +4,7 @@
 		<br /><br />
 	</xpath>
 	<xpath expr="//div[@class='col-xs-6']" position="replace">
-		<div class="col-xs-3" style="float:right;">
+		<div class="col-xs-4" style="float:right;">
                             <div>
                                 <span><strong>Dirección del Cliente:</strong></span>
                             </div>
@@ -23,13 +23,13 @@
 
 	    <div style="border:0; height:100px; width:100%; margin:auto;padding:50px 0 0 0;">
 
-		<div id="pn-left" style="float:left; width:300px;border-bottom:1px solid black; margin-right:100px;">
+		<div id="pn-left" style="float:left; width:250px;border-bottom:1px solid black; margin-right:20px;">
 			<p>Entregado por:</p>
 		</div>
-		<div id="pn-right" style="float:left; width:300px;border-bottom:1px solid black;margin-right:100px;">
+		<div id="pn-right" style="float:left; width:250px;border-bottom:1px solid black;margin-right:20px;">
 			<p>Autorizado por:</p>
 		</div>
-		<div id="pn-right" style="float:left; width:300px;border-bottom:1px solid black">
+		<div id="pn-right" style="float:left; width:250px;border-bottom:1px solid black">
 			<p>Recibido por:</p>
 		</div>
 		 </div>
