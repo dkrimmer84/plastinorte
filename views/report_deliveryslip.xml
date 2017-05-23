@@ -16,6 +16,12 @@
                         </div>
 	</xpath>
 
+	<xpath expr="//h2" position="replace">
+		<span t-if="o.picking_type_id.code == 'outgoing'">Remisión No.</span>
+		<span t-if="o.picking_type_id.code == 'incoming'">Entrada No.</span>
+		<h2 style="padding-bottom:20px; font-size:32px; margin-top:0;"><b><span t-field="o.name"/></b></h2>
+	</xpath>
+
         <xpath expr="//table[3]" position="after">
 
 	    <div style="border:0; height:100px; width:100%; margin:auto;padding:50px 0 0 0;">
