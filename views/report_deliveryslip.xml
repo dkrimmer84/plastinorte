@@ -46,5 +46,11 @@
 		</div>
 		 </div>
         </xpath>
+	<xpath expr="//table[2]/thead[1]/tr[1]/th[1]" position="before">
+		<th><strong>Foto</strong></th>
+	</xpath>
+	<xpath expr="//table[2]/tbody[1]/tr/td" position="before">
+		<td><img t-if="pack_operation.product_id.image" t-att-src="'data:image/png;base64,%s' % pack_operation.product_id.image" style="max-height: 40px;"/></td>
+	</xpath>
     </template>
 </odoo>
