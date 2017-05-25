@@ -1,0 +1,18 @@
+<odoo>
+    <template id="report_saleorder2" inherit_id="sale.report_saleorder_document">
+		<xpath expr="//h2" position="before">
+			<span>foobar</span>
+        	</xpath>	
+
+		<xpath expr="//table[1]/thead[1]/tr[1]/th[1]" position="before">
+                <th><strong>Foto</strong></th>
+        </xpath>
+        <xpath expr="//table[1]/tbody[@class='sale_tbody']/t/tr/td" position="before">
+		<td>
+		<t t-if="l.product_id.image">
+			<img t-if="l.product_id.image" t-att-src="'data:image/png;base64,%s' % l.product_id.image" style="max-height: 40px;"/>
+		</t>
+		</td>
+        </xpath>
+	</template>
+</odoo>
