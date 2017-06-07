@@ -21,6 +21,9 @@
 from openerp import models, fields, api, exceptions
 import string
 
+import logging
+_logger = logging.getLogger(__name__)
+
 
 class Consecutive(models.Model):
     _name = 'product.template'
@@ -29,6 +32,7 @@ class Consecutive(models.Model):
     change_category = fields.Boolean(string="Cambiar referencia interna?", default=True)
     check_default_code = fields.Char("Check Default Code")
     helper_check_default_code = fields.Char("Helper Default Code")
+
 
     def onchange_category(self, cr, uid, ids, catid=False, change_cat=False, context=True):
         """
@@ -43,6 +47,7 @@ class Consecutive(models.Model):
 
         """
         # First check if Change is allowed by change_cat
+
         if catid and change_cat:
             obj = self.pool.get('product.category')
             ids = obj.search(cr, uid, [('id', '=', catid)])
@@ -153,6 +158,11 @@ class ProductName(models.Model):
 class CheckUniqueRef(models.Model):
     _name = 'product.product'
     _inherit = 'product.product'
+
+    def onchange_category(self, cr, uid, ids, catid=False, change_cat=False, context=True):
+        product_template_model = self.pool.get('product.template')
+        return  product_template_model.onchange_category(cr, uid, ids, catid, change_cat , context)
+
 
     # Internal reference field has to be unique,
     # therefore a constraint will validate it:
