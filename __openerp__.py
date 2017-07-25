@@ -31,6 +31,5 @@
     ],
     'qweb': [
         "static/src/xml/inherit.xml",
-
     ],
 }
