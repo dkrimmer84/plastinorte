@@ -91,8 +91,7 @@ class PosOrder(models.Model):
         return abs
 
 
-class pos_make_payment(models.Model):
-    _name = 'pos.make.payment'
+class pos_make_payment(osv.osv_memory):
     _inherit = 'pos.make.payment'
 
     @api.model
@@ -102,13 +101,13 @@ class pos_make_payment(models.Model):
 
         order_id = self.env.context.get('active_id')
         if order_id:
-            order_origin = self.env['pos.order'].browse(order_id).origin.id
+            order_origin = self.env['pos.order'].sudo().browse(order_id).origin.id
         
             if order_origin:
-                _statement_ids = self.env['pos.order'].browse(order_origin).statement_ids[0].id
+                _statement_ids = self.env['pos.order'].sudo().browse(order_origin).statement_ids[0].id
 
                 if _statement_ids:
-                    metds_payments = self.env['account.bank.statement.line'].browse(_statement_ids).journal_id.id
+                    metds_payments = self.env['account.bank.statement.line'].sudo().browse(_statement_ids).journal_id.id
 
                     if metds_payments:
                         result.update({
