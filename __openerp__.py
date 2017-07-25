@@ -23,6 +23,7 @@
         'wizard/pos_box.xml',
         'views/category.xml',
         'views/register_expense.xml',
+        'views/point_of_sale.xml',
 
 	'views/fleet.xml'
     ],
