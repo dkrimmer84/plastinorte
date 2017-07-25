@@ -23,18 +23,14 @@
         'wizard/pos_box.xml',
         'views/category.xml',
         'views/register_expense.xml',
-<<<<<<< HEAD
         'views/scripts.xml',
 	    'views/fleet.xml',
-	'views/report_deliveryslip.xml',
-	'views/report_saleorder.xml'
+	    'views/report_deliveryslip.xml',
+	    'views/report_saleorder.xml',
+        'views/point_of_sale.xml',
     ],
     'qweb': [
         "static/src/xml/inherit.xml",
-=======
-        'views/point_of_sale.xml',
 
-	'views/fleet.xml'
->>>>>>> master
     ],
 }
