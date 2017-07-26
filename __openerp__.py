@@ -25,8 +25,9 @@
         'views/register_expense.xml',
         'views/scripts.xml',
 	    'views/fleet.xml',
-	'views/report_deliveryslip.xml',
-	'views/report_saleorder.xml'
+	    'views/report_deliveryslip.xml',
+	    'views/report_saleorder.xml',
+        'views/point_of_sale.xml',
     ],
     'qweb': [
         "static/src/xml/inherit.xml",
