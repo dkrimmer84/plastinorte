@@ -33,7 +33,7 @@ from openerp import api, fields as Fields
 import locale
 from openerp.tools.misc import formatLang
 from openerp.osv import osv
-
+from openerp.http import request
 _logger = logging.getLogger(__name__)
 
 
@@ -51,44 +51,25 @@ class PosOrder(models.Model):
     origin = fields.Many2one('pos.order', 'Origen')
 
     
-    def refund(self, cr, uid, ids, context=None):
-        """Create a copy of order  for refund order"""
-        clone_list = []
-        line_obj = self.pool.get('pos.order.line')
-        
-        for order in self.browse(cr, uid, ids, context=context):
-            current_session_ids = self.pool.get('pos.session').search(cr, uid, [
-                ('state', '!=', 'closed'),
-                ('user_id', '=', uid)], context=context)
-            if not current_session_ids:
-                raise UserError(_('To return product(s), you need to open a session that will be used to register the refund.'))
 
-            clone_id = self.copy(cr, uid, order.id, {
-                'name': order.name + ' REFUND', # not used, name forced by create
-                'session_id': current_session_ids[0],
-                'date_order': time.strftime('%Y-%m-%d %H:%M:%S'),
-                'origin' : order.id,
-            }, context=context)
-            clone_list.append(clone_id)
+    @api.multi
+    def refund(self):
+        request.session['copy_origin'] = True
+        res = super(PosOrder, self).refund()
 
-        for clone in self.browse(cr, uid, clone_list, context=context):
-            for order_line in clone.lines:
-                line_obj.write(cr, uid, [order_line.id], {
-                    'qty': -order_line.qty
-                }, context=context)
+        return res
 
-        abs = {
-            'name': _('Return Products'),
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'pos.order',
-            'res_id':clone_list[0],
-            'view_id': False,
-            'context':context,
-            'type': 'ir.actions.act_window',
-            'target': 'current',
-        }
-        return abs
+    @api.one
+    def copy(self, default=None):
+        copy_origin = request.session.get('copy_origin')
+        if copy_origin:
+            default.update({
+                'origin' : self.id
+            })
+        request.session['copy_origin'] = False
+
+        default = dict(default or {})
+        return super(PosOrder, self).copy(default)
 
 
 class pos_make_payment(osv.osv_memory):
