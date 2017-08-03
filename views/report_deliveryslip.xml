@@ -17,7 +17,9 @@
 	</xpath>
 
 	<xpath expr="//h2" position="replace">
-		<h2 style="font-size:32px; margin-top:2px;"><b><span t-field="o.name"/></b></h2>
+		<h2 style="font-size:32px; margin-top:2px;"><b><span t-field="o.name"/></b>
+		<span t-if="o.picking_type_id.code == 'internal'"><b> > <span t-field="o.location_dest_id"/></b></span>
+		</h2>
 	</xpath>
 
 	<xpath expr="//table[1]" position="replace">
