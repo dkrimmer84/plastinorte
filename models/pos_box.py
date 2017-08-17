@@ -26,6 +26,8 @@ from openerp.exceptions import RedirectWarning, UserError
 import logging
 _logger = logging.getLogger(__name__)
 
+
+
 class inherit_PosBoxOut(CashBox):
     _name = 'cash.box.out'
     _inherit = 'cash.box.out'
@@ -115,13 +117,18 @@ class pos_session(models.Model):
                             currency = aml.currency_id.id
 
 
-                        condition = [('ref', '=', aml.ref),('credit', '>', 0),('account_id', '=', aml.account_id.id),
+                        condition = [('ref', '=', aml.ref),('account_id', '=', aml.account_id.id),
                         ('name', 'ilike', order.name),('full_reconcile_id', '=', False)]
 
                         if aml.partner_id:
                             condition.append( ('partner_id', '=', aml.partner_id.id) )
                         else:
                             condition.append( ('partner_id', '=', False) )
+
+                        if order.amount_total > 0:
+                            condition.append( ('credit', '>', 0) ) 
+                        elif order.amount_total < 0:
+                            condition.append( ('debit', '>', 0) ) 
                             
 
                         aml2_id = aml_model.search(condition)
