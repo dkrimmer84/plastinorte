@@ -2,7 +2,7 @@
     <template id="report_delivery_document2" inherit_id="stock.report_delivery_document">
 	<xpath expr="//div[@class='col-xs-6']" position="replace">
 		<div class="col-xs-4" style="float:right;">
-                            <div>
+                            <div t-if="o.move_lines and o.move_lines[0].partner_id">
                                 <span><strong>Dirección del Cliente:</strong></span>
                             </div>
                             <div t-if="o.move_lines and o.move_lines[0].partner_id" name="partner_header">
@@ -17,19 +17,22 @@
 	</xpath>
 
 	<xpath expr="//h2" position="replace">
-		<h2 style="font-size:32px; margin-top:2px;"><b><span t-field="o.name"/></b></h2>
+		<h2 style="font-size:32px; margin-top:2px;"><b><span t-field="o.name"/></b>
+		<span t-if="o.picking_type_id.code == 'internal'"><b> > <span t-field="o.location_dest_id"/></b></span>
+		</h2>
 	</xpath>
 
 	<xpath expr="//table[1]" position="replace">
 		<span style="font-size:12px; color:grey;"><strong>
 
-		<span style="font-size: 12px;" t-if="o.picking_type_id.code == 'outgoing'">Remisión</span>
-		<span style="font-size: 12px;" t-if="o.picking_type_id.code == 'incoming'">Entrada</span>
+		<span style="font-size: 14px;" t-if="o.picking_type_id.code == 'outgoing'">Remisión</span>
+		<span style="font-size: 14px;" t-if="o.picking_type_id.code == 'incoming'">Entrada</span>
+		<span style="font-size: 14px;" t-if="o.picking_type_id.code == 'internal'">Transferencia Interna</span>
 		
 		</strong></span> 
 
-		<span style="font-size:12px; color:grey;"><strong> - Orden (Origen)</strong>:</span> <span style="font-size:12px; color:grey;" t-field="o.picking_type_id"/>
-		<span style="font-size:12px; color:grey;"><strong> - Fecha planificada</strong>:</span> <span t-field="o.min_date" style="font-size:12px; color:grey;" />
+		<span style="font-size:14px; color:grey;"><strong> - Orden (Origen)</strong>:</span> <span style="font-size:14px; color:grey;" t-field="o.picking_type_id"/>
+		<span style="font-size:14px; color:grey;"><strong> - Fecha planificada</strong>:</span> <span t-field="o.min_date" style="font-size:14px; color:grey;" />
 	</xpath>
         <xpath expr="//table[2]" position="after">
 
