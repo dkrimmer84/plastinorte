@@ -1,7 +1,7 @@
 <odoo>
     <template id="report_delivery_document2" inherit_id="stock.report_delivery_document">
 	<xpath expr="//div[@class='col-xs-6']" position="replace">
-		<div class="col-xs-4" style="float:right;">
+		<div class="col-xs-4" style="height: 130px; float:right;">
                             <div t-if="o.move_lines and o.move_lines[0].partner_id">
                                 <span><strong>Dirección del Cliente:</strong></span>
                             </div>
@@ -17,7 +17,7 @@
 	</xpath>
 
 	<xpath expr="//h2" position="replace">
-		<h2 style="font-size:32px; margin-top:2px;"><b><span t-field="o.name"/></b>
+		<h2 style="font-size:30px; margin-top:15px;"><b><span t-field="o.name"/></b>
 		<span t-if="o.picking_type_id.code == 'internal'"><b> > <span t-field="o.location_dest_id"/></b></span>
 		</h2>
 	</xpath>
@@ -25,14 +25,14 @@
 	<xpath expr="//table[1]" position="replace">
 		<span style="font-size:12px; color:grey;"><strong>
 
-		<span style="font-size: 14px;" t-if="o.picking_type_id.code == 'outgoing'">Remisión</span>
-		<span style="font-size: 14px;" t-if="o.picking_type_id.code == 'incoming'">Entrada</span>
-		<span style="font-size: 14px;" t-if="o.picking_type_id.code == 'internal'">Transferencia Interna</span>
+		<span style="font-size: 12px;" t-if="o.picking_type_id.code == 'outgoing'">Remisión</span>
+		<span style="font-size: 12px;" t-if="o.picking_type_id.code == 'incoming'">Entrada</span>
+		<span style="font-size: 12px;" t-if="o.picking_type_id.code == 'internal'">Transferencia Interna</span>
 		
 		</strong></span> 
 
-		<span style="font-size:14px; color:grey;"><strong> - Orden (Origen)</strong>:</span> <span style="font-size:14px; color:grey;" t-field="o.picking_type_id"/>
-		<span style="font-size:14px; color:grey;"><strong> - Fecha planificada</strong>:</span> <span t-field="o.min_date" style="font-size:14px; color:grey;" />
+		<span style="font-size:12px; color:grey;"><strong> - Origen</strong>:</span> <span style="font-size:14px; color:grey;" t-field="o.picking_type_id"/>
+		<span style="font-size:12px; color:grey;"><strong> - Fecha planificada</strong>:</span> <span t-field="o.min_date" style="font-size:14px; color:grey;" />
 	</xpath>
         <xpath expr="//table[2]" position="after">
 
@@ -49,11 +49,71 @@
 		</div>
 		 </div>
         </xpath>
-	<xpath expr="//table[2]/thead[1]/tr[1]/th[1]" position="before">
-		<th><strong>Foto</strong></th>
-	</xpath>
-	<xpath expr="//table[2]/tbody[1]/tr/td" position="before">
-		<td><img t-if="pack_operation.product_id.image" t-att-src="'data:image/png;base64,%s' % pack_operation.product_id.image" style="max-height: 40px;"/></td>
+
+
+	<xpath expr="//table[2]" position="replace">
+		<table class="table table-condensed mt48" t-if="o.pack_operation_ids" style="font-size:12px;margin-top:25px !important;">
+                        <t t-set="has_serial_number" t-value="o.pack_operation_ids.filtered('pack_lot_ids')" groups="stock.group_production_lot"/>
+                        <thead>
+                            <tr>
+                                <th><strong>Producto</strong></th>
+                                <th t-if="has_serial_number"><strong>Numero de serie</strong></th>
+                                <th><strong>Estado</strong></th>
+                                <th><strong>Ubicación</strong></th>
+                                <th class="text-right"><strong>Cantidad</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.pack_operation_ids" t-as="pack_operation">
+                                <td>
+                                    <span t-field="pack_operation.product_id"/>
+                                    <t t-if="not pack_operation.product_id and pack_operation.package_id">
+                                        <span  t-field="pack_operation.package_id"/>
+                                    </t>
+                                </td>
+                                <t t-if="has_serial_number">
+                                    <td t-if="pack_operation.pack_lot_ids">
+                                        <table class="table table-condensed" t-if="pack_operation.pack_lot_ids">
+                                            <thead>
+                                                <tr><th>Lot</th><th>Cantidad</th></tr>
+                                            </thead>
+                                            <tr t-foreach="pack_operation.pack_lot_ids" t-as="packlot">
+                                                <td>
+                                                    <span t-field="packlot.lot_id"/>
+                                                    <t t-if="not packlot.lot_id">
+                                                        <span t-field="packlot.lot_name"/>
+                                                    </t>
+                                                </td>
+                                                <td>
+                                                    <span t-field="packlot.qty"/> <t t-if="o.picking_type_id.use_existing_lots and o.state!='done'"> / <span t-field="packlot.qty_todo"/></t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td t-if="not pack_operation.pack_lot_ids"/>
+                                </t>
+                                <td>
+                                    <t t-set="mls" t-value="pack_operation.picking_id.move_lines"/>
+                                    <t t-set="check" t-value="True"/>
+                                    <t t-foreach="mls" t-as="ml">
+                                        <t t-if="ml.product_id.id == pack_operation.product_id.id and check">
+                                            <t t-set="check" t-value="False"/>
+                                            <span t-field="ml.state"/>
+                                        </t>
+                                    </t>
+                                </td>
+                                <td>
+                                    <span t-field="pack_operation.location_id"/>
+                                    <span t-if="pack_operation.package_id">:</span>
+                                    <span t-field="pack_operation.package_id"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="pack_operation.product_qty"/>
+                                    <span t-field="pack_operation.product_uom_id"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>	
 	</xpath>
     </template>
 </odoo>
