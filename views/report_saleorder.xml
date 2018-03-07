@@ -11,9 +11,15 @@
 		</td>
         </xpath>
 
-      <xpath expr="//div[@class='col-xs-6']" position="replace">
-	
-      </xpath>
+
+	<xpath expr="//div/h2/span[1]" position="replace">
+          <span t-if="doc.state not in ['draft','sent']" >Orden de Venta #</span>
+        </xpath>
+	<xpath expr="//div/h2/span[2]" position="replace">
+          <span t-if="doc.state in ['draft','sent']" >Cotización #</span>
+        </xpath>
+
+      <xpath expr="//div[@class='col-xs-6']" position="replace"></xpath>
 
       <xpath expr="//div[@class='col-xs-5 col-xs-offset-1']" position="replace">
           <div class="col-xs-5" style="margin-left:400px; height:130px;">
@@ -228,18 +234,10 @@
 		</span>
 		<span t-if="doc.team_id">
 			<span style="font-size:11px; font-weight:bold;">Equipo de Ventas:</span> <span style="font-size:11px;" t-field="doc.team_id"/>
-		</span><br />
-		<span style="font-size:11px;" t-if="not doc.payment_term_id and doc.partner_id.property_payment_term_id">
-                        <strong style="font-size:11px;">Terminos de pago:</strong>
-                        <span style="font-size:11px;" t-field="doc.partner_id.property_payment_term_id.note"/>
-                </span><br />
-		<span style="font-size:11px;" t-if="doc.fiscal_position_id.note">
-			<strong style="font-size:11px;">Posición fiscal:</strong>
-			<span style="font-size:11px;" t-field="doc.fiscal_position_id.note"/>
 		</span>
             	</p>
 
         </xpath>
-
+	<xpath expr="//t[1]/t[1]/div[1]/p[2]" position="replace"></xpath>
 	</template>
 </odoo>
