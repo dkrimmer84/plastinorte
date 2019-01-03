@@ -28,6 +28,7 @@
 	    'views/report_deliveryslip.xml',
 	    'views/report_saleorder.xml',
         'views/point_of_sale.xml',
+	'views/report_inventory.xml',
     ],
     'qweb': [
         "static/src/xml/inherit.xml",
