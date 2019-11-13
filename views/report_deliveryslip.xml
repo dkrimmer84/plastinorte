@@ -1,6 +1,6 @@
 <odoo>
     <template id="report_delivery_document2" inherit_id="stock.report_delivery_document">
-	<xpath expr="//div[@class='col-xs-6']" position="replace">
+	<xpath expr="//t[@name='partner_header']" position="replace">
 		<div class="col-xs-4" style="height: 130px; float:right;">
                             <div t-if="o.move_lines and o.move_lines[0].partner_id">
                                 <span><strong>Dirección del Cliente:</strong></span>
