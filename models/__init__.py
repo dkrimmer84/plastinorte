@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-import models
-import product
-import pos_box
-import fleet
-import point_sale
+from . import product
+from . import pos_box
+from . import fleet
+from . import point_sale

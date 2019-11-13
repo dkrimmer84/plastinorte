@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
 # Copyright (C) 2016  Dominic Krimmer                                         #
@@ -21,28 +20,21 @@ import logging
 import time
 
 import openerp.addons.decimal_precision as dp
-from openerp import tools, models, SUPERUSER_ID
-from openerp import fields, api
-from openerp.tools import float_is_zero
-from openerp.tools.translate import _
-from openerp.exceptions import UserError
+from odoo import tools, models, SUPERUSER_ID
+from odoo import fields, api
+from odoo.tools import float_is_zero
+from odoo.tools.translate import _
+from odoo.exceptions import UserError
 from datetime import datetime
 
 from uuid import getnode as get_mac
-from openerp import api, fields as Fields
+from odoo import api, fields as Fields
 import locale
-from openerp.tools.misc import formatLang
-from openerp.osv import osv
-from openerp.http import request
+from odoo.tools.misc import formatLang
+from odoo.osv import osv
+from odoo.http import request
 _logger = logging.getLogger(__name__)
 
-
-
-"""class PosAccountMoveLine(models.Model):
-    _name = "account.move.line"
-    _inherit = "account.move.line"
-
-    base_tax = fields.Float('Base Tax')"""
 
 class PosOrder(models.Model):
     _name = "pos.order"
@@ -59,7 +51,7 @@ class PosOrder(models.Model):
 
         return res
 
-    @api.one
+    @api.multi
     def copy(self, default=None):
         copy_origin = request.session.get('copy_origin')
         if copy_origin:
@@ -72,7 +64,7 @@ class PosOrder(models.Model):
         return super(PosOrder, self).copy(default)
 
 
-class pos_make_payment(osv.osv_memory):
+'''class pos_make_payment(osv.osv_memory):
     _inherit = 'pos.make.payment'
 
     @api.model
@@ -96,7 +88,4 @@ class pos_make_payment(osv.osv_memory):
                         })
 
         return result
-
-
-
-
+'''

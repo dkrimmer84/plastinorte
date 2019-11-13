@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
 # Copyright (C) 2016  Dominic Krimmer                                         #
@@ -18,10 +17,10 @@
 ###############################################################################
 
 # Extended Product Template
-from openerp import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions
 import string
 
-from openerp.addons.account.wizard.pos_box import CashBox
+from odoo.addons.account.wizard.pos_box import CashBox
 import logging
 _logger = logging.getLogger(__name__)
 
