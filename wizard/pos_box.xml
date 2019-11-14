@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data>
         <record id="hr_expense_form_view_inherit" model="ir.ui.view">
             <field name="name">hr_expense_form_view</field>
-            <field name="model">hr.expense</field>
-            <field name="inherit_id" ref="hr_expense.hr_expense_form_view"/>
+            <field name="model">hr.expense.sheet</field>
+            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_form"/>
             <field name="type">form</field>
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
-                <data>
-                    <xpath expr="//field[@name='account_move_id']" position="after">
-                         <field name="provider_id"/>
-                         <field name="reason"/>
-                         <field name="nroinvoice"/>
-                    </xpath>
-                </data>
+                <xpath expr="//field[@name='account_move_id']" position="after">
+                    <field name="provider_id"/>
+                    <field name="reason"/>
+                    <field name="nroinvoice"/>
+                </xpath>
             </field>
-        </record>
+	    </record>
         <record id="view_pos_session_form_inherit" model="ir.ui.view">
           <field name="name">pos.session</field>
           <field name="model">pos.session</field>
@@ -24,19 +22,16 @@
           <field name="type">form</field>
           <field eval="1" name="priority"/>
           <field name="arch" type="xml">
-              <data>
-                  <xpath expr="//div[@name='button_box']/button[1]" position="after">
-                    <button class="oe_stat_button" name="expense_control_session" type="object" icon="fa-level-up" attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened', 'closing_control'])]}">
-                        <div class="o_form_field o_stat_info">
-                            <span class="o_stat_text">Registrar</span>
-                            <span class="o_stat_text">Gasto</span>
-                        </div>
-                    </button>
-                    
-                  </xpath>
-              </data>
+              <xpath expr="//div[@name='button_box']/button[1]" position="after">
+                  <button class="oe_stat_button" name="expense_control_session" type="object" icon="fa-level-up" attrs="{'invisible': ['|', ('cash_control', '=', False), ('state', 'not in', ['opened', 'closing_control'])]}">
+                      <div class="o_form_field o_stat_info">
+                          <span class="o_stat_text">Registrar</span>
+                          <span class="o_stat_text">Gasto</span>
+                      </div>
+                  </button>      
+              </xpath>
           </field>
-    </record>
+      </record>
         
     </data>
-</openerp>
+</odoo>

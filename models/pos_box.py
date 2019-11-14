@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
 # Copyright (C) 2016  Dominic Krimmer                                         #
@@ -18,10 +17,10 @@
 ###############################################################################
 
 # Extended Product Template
-from openerp import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions
 import string
 
-from openerp.addons.account.wizard.pos_box import CashBox
+from odoo.addons.account.wizard.pos_box import CashBox
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -34,6 +33,15 @@ class inherit_PosBoxOut(CashBox):
         if self.product_expenses:
             self.name = self.product_expenses.name
  
+
+class inherit_hr_expense_sheet(models.Model):
+    _name = 'hr.expense.sheet'
+    _inherit = 'hr.expense.sheet'
+   
+    provider_id = fields.Many2one('res.partner', 'Proveedor')
+    nroinvoice = fields.Char('Number Invoice')
+    reason = fields.Char('Reason')
+
 
 class inherit_hr_expense(models.Model):
     _name = 'hr.expense'

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
 # Copyright (C) 2016  Dominic Krimmer                                         #
@@ -18,7 +17,7 @@
 ###############################################################################
 
 # Extended Product Template
-from openerp import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions
 import string
 
 

@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 
 {
     'name': 'Plastinorte',
     'category': 'Localization',
-    'version': '9.0.0.1.0',
+    'version': '12.0.0.1.0',
     'author': 'Dominic Krimmer, Plastinorte S.A.S',
     'license': 'AGPL-3',
     'maintainer': 'dominic.krimmer@gmail.com',
@@ -15,7 +14,8 @@
         'account',
         'hr_expense',
         'hr',
-	'fleet'
+	'fleet',
+        'sale'
     ],
     'installable': True,
     'data': [
@@ -24,9 +24,9 @@
         'views/category.xml',
         'views/register_expense.xml',
         'views/scripts.xml',
-	    'views/fleet.xml',
-	    'views/report_deliveryslip.xml',
-	    'views/report_saleorder.xml',
+	'views/fleet.xml',
+	'views/report_deliveryslip.xml',
+	'views/report_saleorder.xml',
         'views/point_of_sale.xml',
     ],
     'qweb': [

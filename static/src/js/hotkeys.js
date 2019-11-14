@@ -4,17 +4,8 @@ odoo.define('plastinorte', function (require) {
 	// Se importan los modulos necesarios
 	var core = require('web.core');
 	var models = require('point_of_sale.models');
-	var session = require('web.session');
-	var PosDB = require('point_of_sale.DB');
-	var gui = require('point_of_sale.gui');
-	var chrome = require('point_of_sale.chrome');
-	var ajax = require('web.ajax');
-	var Model = require('web.Model');
-	var data = require('web.data');
-	var PosBaseWidget = require('point_of_sale.BaseWidget');
 	var Screens = require('point_of_sale.screens');
 
-	var QWeb = core.qweb;
 	var _t = core._t;
 
 
@@ -31,7 +22,6 @@ odoo.define('plastinorte', function (require) {
 	        }
 
 	        if( cashregister.journal != undefined ){
-
 	        	if(cashregister.journal.type != 'cash' ){
 	        		Mousetrap.unbind('return');
 
@@ -55,38 +45,27 @@ odoo.define('plastinorte', function (require) {
 		            });
 
         			Mousetrap.bindGlobal('esc', function(){
-
 						if($('.popup-password').is(":visible")){
 			    			var cancel = $('div.popup-password > div.centered > .cancel');
 							cancel.click();
 							return;
 
 			    		}
-
 			    		if($('.popup-confirm').is(":visible")){
 			    			return;
 			    		}
-
 						if( $('.back').is(":visible") ){
 							$('.back').click();
 
 							return;
 						}
-
 					});
-
-
 	        	} else {
 	        		this.pos.get_order().add_paymentline( cashregister );
 			        this.reset_input();
 			        this.render_paymentlines()
 	        	}
-
-
 	        }
-
-
-
 		}
 	});
 
@@ -108,16 +87,12 @@ odoo.define('plastinorte', function (require) {
 	    			var confirm = $('div.popup-password > div.centered > .confirm');
 					confirm.click();
 					return;
-
 	    		}
-
 
 				if( ! $('.next').is(":visible") ){
 					if( $('.searchbox > input').is(":focus") ){
 						$('.searchbox > input').blur();
 					} else {
-						
-
 						var product_selected = $('.product').hasClass('product_selected');
 
 						if( product_selected ){
@@ -126,11 +101,9 @@ odoo.define('plastinorte', function (require) {
 
 							return;
 						}
-
 					}
 					
 				} else {
-
 					if($('.print').is(":visible")){
 						$('.next').click();
 						return;
@@ -138,8 +111,6 @@ odoo.define('plastinorte', function (require) {
 
 					var payment_selected = $('.payment_selected');
 					if( payment_selected.length > 0 ){
-						
-
 						var payment_type = payment_selected.data('type');
 
         				if( payment_type  != 'cash' ){
@@ -151,23 +122,9 @@ odoo.define('plastinorte', function (require) {
 							e.preventDefault();
 							return;
         				}
-
-	        			
-
-	        			
-				        
-
-						
 					}
-			
 				}
-
-
-
 			});
 	    },
-
 	});
-
-
  });
