@@ -34,6 +34,15 @@ class inherit_PosBoxOut(CashBox):
             self.name = self.product_expenses.name
  
 
+class inherit_hr_expense_sheet(models.Model):
+    _name = 'hr.expense.sheet'
+    _inherit = 'hr.expense.sheet'
+   
+    provider_id = fields.Many2one('res.partner', 'Proveedor')
+    nroinvoice = fields.Char('Number Invoice')
+    reason = fields.Char('Reason')
+
+
 class inherit_hr_expense(models.Model):
     _name = 'hr.expense'
     _inherit = 'hr.expense'
