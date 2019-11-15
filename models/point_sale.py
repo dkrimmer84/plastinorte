@@ -64,7 +64,7 @@ class PosOrder(models.Model):
         return super(PosOrder, self).copy(default)
 
 
-'''class pos_make_payment(osv.osv_memory):
+class pos_make_payment(osv.osv_memory):
     _inherit = 'pos.make.payment'
 
     @api.model
@@ -88,4 +88,3 @@ class PosOrder(models.Model):
                         })
 
         return result
-'''

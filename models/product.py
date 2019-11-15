@@ -16,97 +16,70 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.       #
 ###############################################################################
 
-# Extended Product Template
-from odoo import models, fields, api, exceptions
 import string
-
 import logging
+
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+
 _logger = logging.getLogger(__name__)
 
 
-class Consecutive(models.Model):
-    _name = 'product.template'
+class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    change_category = fields.Boolean(string="Cambiar referencia interna?", default=True)
-    check_default_code = fields.Char("Check Default Code")
-    helper_check_default_code = fields.Char("Helper Default Code")
+    override_default_code = fields.Boolean(string="Cambiar referencia interna?", default=True)
+
+    """
+    Assigning secuence number on create if needed
+    """
+    @api.model
+    def create(self, vals):
+        rec = super(ProductTemplate, self).create(vals)
+        if rec.name:
+            rec.name = rec.name.title()
+
+        if rec.override_default_code:
+            rec.default_code = rec.categ_id.sequence_id.next_by_id()
+        
+        return rec
+    
+    """
+    Many people have the bad habit in writing everyting in uppercase (HATE IT!)
+    Here we are making product names more beautiful:
+    e.j. MY PRODUCT NAME => My Product Name
+    """
+    @api.multi
+    def write(self, vals):
+        if vals.get('name'):
+            vals['name'] = vals['name'].title()
+        return super(ProductTemplate, self).write(vals)
 
 
-    def onchange_category(self, cr, uid, ids, catid=False, change_cat=False, context=True):
-        """
-        This function takes the chosen category ID and checks if this
-        category has a prefix given. If yes, he will look in the database
-        for the next consecutive.
-        If there is no prefix given, then nothing happens
-        If it is a totally new prefix, the product will have number 1 as first
-        number
-        @param catid: category ID which is chosen by the user in the interface
-        @return: object
+class ProductCategory(models.Model):
+    _inherit = 'product.category'
 
-        """
-        # First check if Change is allowed by change_cat
+    sequence_id = fields.Many2one("ir.sequence", readonly=True, copy=False)
 
-        if catid and change_cat:
-            obj = self.pool.get('product.category')
-            ids = obj.search(cr, uid, [('id', '=', catid)])
-            for rec in obj.browse(cr, uid, ids):
-                # If there is no prefix given in the product config, do nothing
-                # Otherwise, go for it:
-                if rec.consecutive is not False:
-                    cr.execute("SELECT \
-                               default_code FROM product_product \
-                               WHERE \
-                               default_code LIKE %s \
-                               ORDER BY substring(default_code, '\d+')::int \
-                               DESC NULLS FIRST LIMIT %s",
-                               (rec.consecutive+'%', 1))
+    @api.model
+    def create(self, vals):
+        rec = super(ProductCategory, self).create(vals)
+        if not rec.sequence_id:
+            rec.sequence_id = rec._create_sequence()
 
-                    result = cr.dictfetchall()
+        return rec
+    
+    @api.model
+    def _create_sequence(self):
+        return self.env['ir.sequence'].sudo().create({
+            'name': 'Product Category ' + self.name,
+            'implementation': 'no_gap',
+            'padding': 4,
+            'number_increment': 1,
+            'use_date_range': False
+        })
 
-                    # If there was a result then go ahead:
-                    # Otherwise set if to false in order to create a
-                    # totally new consecutive number (1)
-                    last_consecutive = result[0]['default_code'] \
-                        if cr.rowcount > 0 \
-                        else False
-
-                    if last_consecutive:
-                        new_consecutive = self.increase_consecutive(
-                            last_consecutive
-                        )
-                    else:
-                        # If there was no result because there was no
-                        # consecutive so far with this prefix,
-                        # we create a new one with numer 1
-                        if '-' in rec.consecutive:
-                            new_consecutive = rec.consecutive + '-1'
-                        else:
-                            return False
-
-                    return {'value': {'default_code': new_consecutive,
-                                      'helper_check_default_code': new_consecutive}}
-
-    @staticmethod
-    def increase_consecutive(last_consecutive=False):
-        """
-        Here we go: We are increasing the consecutive by +1
-        @param last_consecutive:
-        @return:
-        """
-        if last_consecutive:
-            if '-' in last_consecutive:
-                sep = string.split(last_consecutive, '-')
-                if len(sep) > 0:
-                    return str(sep[0]) + '-' + \
-                           str(sep[1]) + '-' + \
-                           str((int(sep[2])+1))
-        return False
-
-    @api.onchange('default_code')
-    def _helper_check_default_code(self):
-        if self.change_category:
-            self.check_default_code = self.default_code
+''' TODO: Check this constrains
 
     @api.constrains('check_default_code', 'helper_check_default_code')
     def _check_default_code(self):
@@ -117,41 +90,7 @@ class Consecutive(models.Model):
                     "Pusiste una referencia que no es conforme a la categoria."
                     " Por favor, escoja una categoría y la referencia se genera"
                     " automático.")
-
-    @api.onchange('change_category')
-    def _on_change_category(self):
-        if self.change_category is False:
-            self.check_default_code = ""
-            self.helper_check_default_code = ""
-        else:
-            self.helper_check_default_code = "1"
-
-
-
-class PrefixCategory(models.Model):
-    """
-    Model that adds a new field: consecutive prefix
-    This field makes is easy to generate consecutives in the product
-    template more easily
-    """
-    _name = 'product.category'
-    _inherit = 'product.category'
-
-    consecutive = fields.Char("Consecutivo Prefijo")
-
-
-class ProductName(models.Model):
-    """
-    Many people have the bad habit in writing everyting in uppercase (HATE IT!)
-    Here we are making product names more beautiful:
-    e.j. MY PRODUCT NAME => My Product Name
-    """
-    _name = 'product.template'
-    _inherit = 'product.template'
-
-    @api.onchange('name')
-    def onchange_product_name(self):
-        self.name = self.name.title() if self.name else ''
+'''
 
 
 class CheckUniqueRef(models.Model):
