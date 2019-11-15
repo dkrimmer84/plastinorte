@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
+        <!-- 
         <record id="product_normal_form_view_inherit" model="ir.ui.view">
             <field name="name">product.product_normal_form_view</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
-
                 <field name ="categ_id" position="replace">
                     <field name="categ_id" on_change="onchange_category(categ_id, change_category)"/>
                 </field>
@@ -14,43 +14,19 @@
                 <field name="categ_id" position="before">
                     <field name="change_category"/>
                 </field>
-
-
-
-
             </field>
-        </record>
+        </record> 
+        -->
 
-
-        <record id="product_template_only_form_view_dkr" model="ir.ui.view">
-            <field name="name">product.template.product.form</field>
+        <record id="product_template_only_form_view_plastinorte" model="ir.ui.view">
+            <field name="name">Product Template Plastinorte</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
 
-                <field name ="categ_id" position="replace">
-                    <field name="categ_id" on_change="onchange_category(categ_id, change_category)"/>
-                </field>
-
-                <field name ="default_code" position="replace">
-                    <field name="default_code"
-                           required="True"
-                           placeholder="Se llena automático con la categoría!"
-                           attrs="{'invisible':[('default_code', '=', False)]}" />
-                </field>
-
-                <field name="categ_id" position="before">
-                    <field name="change_category"/>
-                </field>
-
-                <field name="default_code" position="after">
-                    <field name="check_default_code" invisible="True" />
-                </field>
-
-                <field name="check_default_code" position="after">
-                    <field name="helper_check_default_code" invisible="True"/>
-                </field>
-
+                <xpath expr="//field[@name='default_code']" position="before">
+                    <field name="override_default_code"/>
+                </xpath>
 
             </field>
         </record>
