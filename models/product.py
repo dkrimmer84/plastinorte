@@ -19,7 +19,7 @@
 import string
 import logging
 
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ _logger = logging.getLogger(__name__)
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    override_default_code = fields.Boolean(string="Cambiar referencia interna?", default=True)
+    override_default_code = fields.Boolean(string="Create internal reference automatically?", default=True)
 
     """
     Assigning secuence number on create if needed
@@ -36,10 +36,14 @@ class ProductTemplate(models.Model):
     @api.model
     def create(self, vals):
         rec = super(ProductTemplate, self).create(vals)
+
         if rec.name:
             rec.name = rec.name.title()
 
         if rec.override_default_code:
+            if not rec.categ_id.sequence_id:
+                raise ValidationError(_("This category haven't sequence assigned! "
+                                        "You can't override code, please uncheck the above field."))
             rec.default_code = rec.categ_id.sequence_id.next_by_id()
         
         return rec
@@ -53,7 +57,78 @@ class ProductTemplate(models.Model):
     def write(self, vals):
         if vals.get('name'):
             vals['name'] = vals['name'].title()
+        
+        set_default_code = False
+
+        if vals.get('categ_id'):
+            if self.override_default_code:
+                if 'override_default_code' in vals:
+                    if vals.get('override_default_code'):
+                        set_default_code = True
+                else:
+                    set_default_code = True
+            elif vals.get('override_default_code'):
+                set_default_code = True
+
+        if set_default_code:
+            if not self.categ_id.sequence_id:
+                raise ValidationError(_("This category haven't sequence assigned! "
+                                        "You can't override code, please uncheck the above field."))
+            vals['default_code'] = self.categ_id.sequence_id.next_by_id()
+
         return super(ProductTemplate, self).write(vals)
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    @api.model
+    def create(self, vals):
+        rec = super(ProductProduct, self).create(vals)
+        
+        if rec.name:
+            rec.name = rec.name.title()
+
+        if rec.override_default_code:
+            if not rec.categ_id.sequence_id:
+                raise ValidationError(_("This category haven't sequence assigned! "
+                                        "You can't override code, please uncheck the above field."))
+            rec.default_code = rec.categ_id.sequence_id.next_by_id()
+        
+        return rec
+    
+    @api.multi
+    def write(self, vals):
+        if vals.get('name'):
+            vals['name'] = vals['name'].title()
+        
+        set_default_code = False
+
+        if vals.get('categ_id'):
+            if self.override_default_code:
+                if 'override_default_code' in vals:
+                    if vals.get('override_default_code'):
+                        set_default_code = True
+                else:
+                    set_default_code = True
+            elif vals.get('override_default_code'):
+                set_default_code = True
+
+        if set_default_code:
+            if not self.categ_id.sequence_id:
+                raise ValidationError(_("This category haven't sequence assigned! "
+                                        "You can't override code, please uncheck the above field."))
+            vals['default_code'] = self.categ_id.sequence_id.next_by_id()
+        
+        return super(ProductProduct, self).write(vals)
+
+    # Internal reference field has to be unique,
+    # therefore a constraint will validate it:
+    _sql_constraints = [
+        ('default_unique',
+         'UNIQUE(default_code)',
+         "La Referencia interna debe ser única!")
+    ]
 
 
 class ProductCategory(models.Model):
@@ -78,34 +153,13 @@ class ProductCategory(models.Model):
             'number_increment': 1,
             'use_date_range': False
         })
+    
+    @api.multi
+    def unlink(self):
+        sequence = self.sequence_id
+        res = super(ProductCategory, self).unlink()
 
-''' TODO: Check this constrains
+        if res:
+            sequence.unlink()
 
-    @api.constrains('check_default_code', 'helper_check_default_code')
-    def _check_default_code(self):
-        if self.change_category:
-            # raise exceptions.ValidationError(self.check_default_code)
-            if self.check_default_code != self.helper_check_default_code:
-                raise exceptions.ValidationError(
-                    "Pusiste una referencia que no es conforme a la categoria."
-                    " Por favor, escoja una categoría y la referencia se genera"
-                    " automático.")
-'''
-
-
-class CheckUniqueRef(models.Model):
-    _name = 'product.product'
-    _inherit = 'product.product'
-
-    def onchange_category(self, cr, uid, ids, catid=False, change_cat=False, context=True):
-        product_template_model = self.pool.get('product.template')
-        return  product_template_model.onchange_category(cr, uid, ids, catid, change_cat , context)
-
-
-    # Internal reference field has to be unique,
-    # therefore a constraint will validate it:
-    _sql_constraints = [
-        ('default_unique',
-         'UNIQUE(default_code)',
-         "La Referencia interna debe ser única!")
-    ]
+        return res
