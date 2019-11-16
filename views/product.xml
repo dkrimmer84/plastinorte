@@ -12,7 +12,7 @@
 
                 <xpath expr="//field[@name='default_code']" position="replace">
                     <field name="default_code" attrs="{ 'invisible': [('product_variant_count', '>', 1)], 
-                                                'readonly': [('override_default_code', '=', True)], 'required': 1}"/>
+                                                'readonly': [('override_default_code', '=', True)]}"/>
                 </xpath>
             </field>
         </record>
