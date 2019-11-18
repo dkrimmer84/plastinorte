@@ -168,3 +168,11 @@ class ProductCategory(models.Model):
             sequence.unlink()
 
         return res
+
+    @api.model
+    def create_sequence_for_categories(self):
+        categories = self.env['product.category'].search([('sequence_id', '=', False)])
+
+        if categories:
+            for cat in categories:
+                cat.sequence_id = cat._create_sequence()
