@@ -16,7 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.       #
 ###############################################################################
 
-import string
 import logging
 
 from odoo import models, fields, api, _
@@ -77,6 +76,12 @@ class ProductTemplate(models.Model):
             vals['default_code'] = self.categ_id.sequence_id.next_by_id()
 
         return super(ProductTemplate, self).write(vals)
+    
+    @api.onchange('categ_id', 'override_default_code')
+    def _onchange_category(self):
+        if self.override_default_code:
+            if self.categ_id:
+                self.default_code = self.categ_id.sequence_id.prefix
 
 
 class ProductProduct(models.Model):
@@ -163,3 +168,11 @@ class ProductCategory(models.Model):
             sequence.unlink()
 
         return res
+
+    @api.model
+    def create_sequence_for_categories(self):
+        categories = self.env['product.category'].search([('sequence_id', '=', False)])
+
+        if categories:
+            for cat in categories:
+                cat.sequence_id = cat._create_sequence()
