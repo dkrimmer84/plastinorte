@@ -28,24 +28,6 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     override_default_code = fields.Boolean(string="Create internal reference automatically?", default=True)
-
-    """
-    Assigning secuence number on create if needed
-    """
-    @api.model
-    def create(self, vals):
-        rec = super(ProductTemplate, self).create(vals)
-
-        if rec.name:
-            rec.name = rec.name.title()
-
-        if rec.override_default_code:
-            if not rec.categ_id.sequence_id:
-                raise ValidationError(_("This category haven't sequence assigned! "
-                                        "You can't override code, please uncheck the above field."))
-            rec.default_code = rec.categ_id.sequence_id.next_by_id()
-        
-        return rec
     
     """
     Many people have the bad habit in writing everyting in uppercase (HATE IT!)
@@ -66,14 +48,21 @@ class ProductTemplate(models.Model):
                         set_default_code = True
                 else:
                     set_default_code = True
-            elif vals.get('override_default_code'):
-                set_default_code = True
+        
+        if vals.get('override_default_code'):
+            set_default_code = True
 
         if set_default_code:
             if not self.categ_id.sequence_id:
                 raise ValidationError(_("This category haven't sequence assigned! "
                                         "You can't override code, please uncheck the above field."))
-            vals['default_code'] = self.categ_id.sequence_id.next_by_id()
+
+            if vals.get('categ_id'):
+                category = self.env['product.category'].search([('id', '=', vals.get('categ_id'))], limit=1)
+            else:
+                category = self.categ_id
+            
+            vals['default_code'] = category.sequence_id.next_by_id()
 
         return super(ProductTemplate, self).write(vals)
     
