@@ -106,7 +106,6 @@ class Consecutive(models.Model):
 
     @api.constrains('check_default_code', 'helper_check_default_code')
     def _check_default_code(self):
-        import wdb; wdb.set_trace()
         if self.change_category:
             # raise exceptions.ValidationError(self.check_default_code)
             if self.check_default_code != self.helper_check_default_code:
@@ -117,7 +116,6 @@ class Consecutive(models.Model):
 
     @api.onchange('change_category')
     def _on_change_category(self):
-        import wdb; wdb.set_trace()
         if self.change_category is False:
             self.check_default_code = ""
             self.helper_check_default_code = ""
