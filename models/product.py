@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 ###############################################################################
 #                                                                             #
 # Copyright (C) 2016  Dominic Krimmer                                         #
@@ -16,110 +17,152 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.       #
 ###############################################################################
 
+# Extended Product Template
+from odoo  import models, fields, api, exceptions
+import string
+
 import logging
-
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
-
 _logger = logging.getLogger(__name__)
 
 
-class ProductTemplate(models.Model):
+class Consecutive(models.Model):
+    _name = 'product.template'
     _inherit = 'product.template'
 
-    override_default_code = fields.Boolean(string="Create internal reference automatically?", default=True)
-
-    _sql_constraints = [
-        ('default_unique',
-         'UNIQUE(default_code)',
-         "La Referencia interna debe ser única!")
-    ]
-
-    
-    @api.model
-    def create(self, vals):
-        if vals['override_default_code']:
-            if 'default_code' not in vals or vals['default_code'] == '/':
-                categ_id = vals.get("categ_id")
-                categ = sequence = False
-                if categ_id:
-                    # Created as a product.product
-                    categ = self.env['product.category'].browse(categ_id)
-                if categ:
-                    sequence = categ.sequence_id
-                if not sequence:
-                    raise UserError('No sequence')
-                vals['default_code'] = sequence.next_by_id()
-        return super(ProductTemplate, self).create(vals)
-
-    @api.multi
-    def write(self, vals):
-        for product in self:
-            if vals.get('default_code', '') == '':
-                if vals.get('override_default_code', '') or self.override_default_code:
-                    category_id = vals.get('categ_id', product.categ_id.id)
-                    category = self.env['product.category'].browse(category_id)
-                    sequence = category.sequence_id
-                    if not sequence:
-                        raise UserError('No sequence')
-                    ref = sequence.next_by_id()
-                    vals['default_code'] = ref
-            super(ProductTemplate, product).write(vals)
-        return True
-
-    @api.onchange('categ_id', 'override_default_code')
-    def _onchange_category(self):
-        self.default_code = False
+    change_category = fields.Boolean(string="Cambiar referencia interna?", default=True)
+    check_default_code = fields.Char("Check Default Code")
+    helper_check_default_code = fields.Char("Helper Default Code")
 
 
-class ProductProduct(models.Model):
-    _inherit = 'product.product'
+    @api.onchange('categ_id')
+    def onchange_category(self):
+        """
+        This function takes the chosen category ID and checks if this
+        category has a prefix given. If yes, he will look in the database
+        for the next consecutive.
+        If there is no prefix given, then nothing happens
+        If it is a totally new prefix, the product will have number 1 as first
+        number
+        @param catid: category ID which is chosen by the user in the interface
+        @return: object
 
-    _sql_constraints = [
-        ('default_unique',
-         'UNIQUE(default_code)',
-         "La Referencia interna debe ser única!")
-    ]
-  
+        """
+        # First check if Change is allowed by change_cat
+        categ_id = self.categ_id
+        change_cat = self.change_category
+        if categ_id and change_cat:
+             # If there is no prefix given in the product config, do nothing
+             # Otherwise, go for it:
+            if categ_id.consecutive is not False:
+                self.env.cr.execute("SELECT \
+                               default_code FROM product_product \
+                               WHERE \
+                               default_code LIKE %s \
+                               ORDER BY substring(default_code, '\d+')::int \
+                               DESC NULLS FIRST LIMIT %s",
+                               (categ_id.consecutive+'%', 1))
+
+                result = self.env.cr.dictfetchall()
+
+                    # If there was a result then go ahead:
+                    # Otherwise set if to false in order to create a
+                    # totally new consecutive number (1)
+                last_consecutive = result[0]['default_code'] \
+                    if self.env.cr.rowcount > 0 \
+                    else False
+
+                if last_consecutive:
+                    new_consecutive = self.increase_consecutive(
+                            last_consecutive
+                        )
+                else:
+                    # If there was no result because there was no
+                    # consecutive so far with this prefix,
+                    # we create a new one with numer 1
+                    new_consecutive = categ_id.consecutive + '-1'
+
+                return {'value': {'default_code': new_consecutive,
+                                      'helper_check_default_code': new_consecutive}}
+
+    @staticmethod
+    def increase_consecutive(last_consecutive=False):
+        """
+        Here we go: We are increasing the consecutive by +1
+        @param last_consecutive:
+        @return:
+        """
+        if last_consecutive:
+            if '-' in last_consecutive:
+                sep = last_consecutive.split('-') #Delete character -
+                sep = [i for i in sep if i]  # Delete blanck records
+                sep[-1] = str((int(sep[-1])+1)) # Sum 1 final position
+                return  '-'.join(sep)
+        return False
+
+    @api.onchange('default_code')
+    def _helper_check_default_code(self):
+        if self.change_category:
+            self.check_default_code = self.default_code
+
+    @api.constrains('check_default_code', 'helper_check_default_code')
+    def _check_default_code(self):
+        if self.change_category:
+            # raise exceptions.ValidationError(self.check_default_code)
+            if self.check_default_code != self.helper_check_default_code:
+                raise exceptions.ValidationError(
+                    "Pusiste una referencia que no es conforme a la categoria."
+                    " Por favor, escoja una categoría y la referencia se genera"
+                    " automático.")
+
+    @api.onchange('change_category')
+    def _on_change_category(self):
+        if self.change_category is False:
+            self.check_default_code = ""
+            self.helper_check_default_code = ""
+        else:
+            self.helper_check_default_code = "1"
 
 
-class ProductCategory(models.Model):
+
+class PrefixCategory(models.Model):
+    """
+    Model that adds a new field: consecutive prefix
+    This field makes is easy to generate consecutives in the product
+    template more easily
+    """
+    _name = 'product.category'
     _inherit = 'product.category'
 
-    sequence_id = fields.Many2one("ir.sequence", readonly=True, copy=False)
+    consecutive = fields.Char("Consecutivo Prefijo")
 
-    @api.model
-    def create(self, vals):
-        rec = super(ProductCategory, self).create(vals)
-        if not rec.sequence_id:
-            rec.sequence_id = rec._create_sequence()
 
-        return rec
-    
-    @api.model
-    def _create_sequence(self):
-        return self.env['ir.sequence'].sudo().create({
-            'name': 'Product Category ' + self.name,
-            'implementation': 'no_gap',
-            'padding': 4,
-            'number_increment': 1,
-            'use_date_range': False
-        })
-    
-    @api.multi
-    def unlink(self):
-        sequence = self.sequence_id
-        res = super(ProductCategory, self).unlink()
+class ProductName(models.Model):
+    """
+    Many people have the bad habit in writing everyting in uppercase (HATE IT!)
+    Here we are making product names more beautiful:
+    e.j. MY PRODUCT NAME => My Product Name
+    """
+    _name = 'product.template'
+    _inherit = 'product.template'
 
-        if res:
-            sequence.unlink()
+    @api.onchange('name')
+    def onchange_product_name(self):
+        self.name = str(self.name).upper() if self.name else ''
 
-        return res
 
-    @api.model
-    def create_sequence_for_categories(self):
-        categories = self.env['product.category'].search([('sequence_id', '=', False)])
+class CheckUniqueRef(models.Model):
+    _name = 'product.product'
+    _inherit = 'product.product'
 
-        if categories:
-            for cat in categories:
-                cat.sequence_id = cat._create_sequence()
+    def onchange_category(self):
+        product_template_model = self.env['product.template']
+        return  product_template_model.onchange_category()
+
+
+    # Internal reference field has to be unique,
+    # therefore a constraint will validate it:
+    _sql_constraints = [
+        ('default_unique',
+         'UNIQUE(default_code)',
+         "La Referencia interna debe ser única!")
+    ]
