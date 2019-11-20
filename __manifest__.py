@@ -14,7 +14,7 @@
         'account',
         'hr_expense',
         'hr',
-	'fleet',
+	    'fleet',
         'sale'
     ],
     'installable': True,
