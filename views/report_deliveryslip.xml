@@ -32,7 +32,7 @@
 		</strong></span> 
 
 		<span style="font-size:12px; color:grey;"><strong> - Origen</strong>:</span> <span style="font-size:14px; color:grey;" t-field="o.picking_type_id"/>
-		<span style="font-size:12px; color:grey;"><strong> - Fecha planificada</strong>:</span> <span t-field="o.min_date" style="font-size:14px; color:grey;" />
+		<span style="font-size:12px; color:grey;"><strong> - Fecha planificada</strong>:</span> <span t-field="o.date_done" style="font-size:14px; color:grey;" />
 		<span t-if="o.origin">
 			<span style="font-size:12px; color:grey;"><strong> - Documento Origen</strong>:</span> <span t-field="o.origin" style="font-size:14px; color:grey;" />
 		</span>
@@ -55,8 +55,9 @@
 
 
 	<xpath expr="//table[2]" position="replace">
-		<table class="table table-condensed mt48" t-if="o.pack_operation_ids" style="font-size:12px;margin-top:25px !important;">
-                        <t t-set="has_serial_number" t-value="o.pack_operation_ids.filtered('pack_lot_ids')" groups="stock.group_production_lot"/>
+		<table class="table table-sm mt48" t-if="o.move_line_ids and o.state=='done'" style="font-size:12px;margin-top:25px !important;">
+
+            <t t-set="has_serial_number" t-value="o.move_line_ids.mapped('lot_id')"  groups="stock.group_production_lot"/>
                         <thead>
                             <tr>
                                 <th><strong>Producto</strong></th>
@@ -67,7 +68,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="o.pack_operation_ids" t-as="pack_operation">
+                            <tr t-foreach="o.move_line_ids" t-as="pack_operation">
                                 <td>
                                     <span t-field="pack_operation.product_id"/>
                                     <t t-if="not pack_operation.product_id and pack_operation.package_id">
