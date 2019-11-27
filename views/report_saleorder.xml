@@ -5,8 +5,8 @@
         </xpath>
         <xpath expr="//table[1]/tbody[@class='sale_tbody']/t[2]/tr/t" position="before">
 		<td>
-		<t t-if="l.product_id.image">
-			<img t-if="l.product_id.image" t-att-src="'data:image/png;base64,%s' % l.product_id.image" style="max-height: 40px;"/>
+		<t t-if="line.product_id.image">
+			<img t-if="line.product_id.image" t-att-src="'data:image/png;base64,%s' % line.product_id.image" style="max-height: 40px;"/>
 		</t>
 		</td>
         </xpath>
