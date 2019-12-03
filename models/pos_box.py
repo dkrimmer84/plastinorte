@@ -27,33 +27,35 @@ _logger = logging.getLogger(__name__)
 class inherit_PosBoxOut(CashBox):
     _name = 'cash.box.out'
     _inherit = 'cash.box.out'
-    
-    @api.onchange('product_expenses') 
+
+    @api.onchange('product_expenses')
     def on_product_expenses(self):
         if self.product_expenses:
             self.name = self.product_expenses.name
- 
+
 
 class inherit_hr_expense_sheet(models.Model):
     _name = 'hr.expense.sheet'
     _inherit = 'hr.expense.sheet'
-   
+
     provider_id = fields.Many2one('res.partner', 'Proveedor')
     nroinvoice = fields.Char('Number Invoice')
     reason = fields.Char('Reason')
-
 
 class inherit_hr_expense(models.Model):
-    _name = 'hr.expense'
+#    _name = 'hr.expense'
     _inherit = 'hr.expense'
-   
+
+    name = fields.Char('Expense Report Summary', required=False)
+    product_id = fields.Many2one('product.product', readonly=False)
     provider_id = fields.Many2one('res.partner', 'Proveedor')
     nroinvoice = fields.Char('Number Invoice')
     reason = fields.Char('Reason')
+    unit_amount = fields.Float("Unit Price", readonly=False, required=True)
 
     @api.multi
-    def register_expense(self):   
-       
+    def register_expense(self):
+
         model_cash_box_out = self.env['cash.box.out']
 
         cash_id = model_cash_box_out.create({
@@ -63,7 +65,7 @@ class inherit_hr_expense(models.Model):
         if cash_id:
             cash_id.run()
 
-        model_pos_session = self.env['pos.session']   
+        model_pos_session = self.env['pos.session']
         model_account_journal = self.env['account.journal']
         model_hr_employee = self.env['hr.employee']
         taxes_model = self.env['product.product']
@@ -73,7 +75,7 @@ class inherit_hr_expense(models.Model):
         taxes = taxes_model.search([('id', '=', self.product_id.id)], limit = 1)
         pos = model_pos_session.search([('id', '=' , active_id)])
         account_journal_id = model_account_journal.search([('type', '=', 'cash'),('name', 'ilike', 'Control')], limit = 1)
-        query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])   
+        query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])
 
         self.write({
             'description' : pos.config_id.name if pos else False,
@@ -84,18 +86,29 @@ class inherit_hr_expense(models.Model):
             })
 
         self.tax_ids = taxes[0].supplier_taxes_id
- 
 
-        
+
+
 class pos_session(models.Model):
     _name = 'pos.session'
     _inherit = 'pos.session'
-   
+
     @api.multi
     def expense_control_session(self, values):
 
-        view_ref = self.env['ir.model.data'].get_object_reference('plastinorte', 'register_expense_form_control')
-        view_id = view_ref[ 1 ] if view_ref else False
+        view_ref = self.env.ref('plastinorte.register_expense_pos_form_control')
+        view_id = view_ref.id if view_ref else False
+
+      #  return {
+             #  'context': {},
+      #         'view_type': 'form',
+      #         'view_mode': 'form',
+      #         'res_model': 'hr.expense',
+             #  'res_id': False,
+      #         'view': [(view_id,'form')],
+      #         'type': 'ir.actions.act_window',
+      #         'target': 'new',
+      #        }
 
         return {
                'context': {},
