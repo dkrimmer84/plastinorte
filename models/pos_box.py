@@ -34,16 +34,8 @@ class inherit_PosBoxOut(CashBox):
             self.name = self.product_expenses.name
 
 
-class inherit_hr_expense_sheet(models.Model):
-    _name = 'hr.expense.sheet'
-    _inherit = 'hr.expense.sheet'
-
-    provider_id = fields.Many2one('res.partner', 'Proveedor')
-    nroinvoice = fields.Char('Number Invoice')
-    reason = fields.Char('Reason')
-
 class inherit_hr_expense(models.Model):
-#    _name = 'hr.expense'
+    _name = 'hr.expense'
     _inherit = 'hr.expense'
 
     name = fields.Char('Expense Report Summary', required=False)
@@ -55,11 +47,10 @@ class inherit_hr_expense(models.Model):
 
     @api.multi
     def register_expense(self):
-
         model_cash_box_out = self.env['cash.box.out']
 
         cash_id = model_cash_box_out.create({
-            'name' : self.name,
+            'name' : self.product_id.name,
             'amount' : self.unit_amount
             })
         if cash_id:
@@ -78,16 +69,14 @@ class inherit_hr_expense(models.Model):
         query = model_hr_employee.search([('user_id', '=' ,  self.env.uid)])
 
         self.write({
+            'name': self.product_id.name,
             'description' : pos.config_id.name if pos else False,
             'payment_mode' : 'company_account',
             'bank_journal_id' : account_journal_id.id if account_journal_id else False,
             'employee_id' : query.id if query else False,
-            'department_id' : query.department_id.id
+            'department_id' : query.department_id.id,
+            'tax_ids': taxes[0].supplier_taxes_id
             })
-
-        self.tax_ids = taxes[0].supplier_taxes_id
-
-
 
 class pos_session(models.Model):
     _name = 'pos.session'
@@ -99,17 +88,6 @@ class pos_session(models.Model):
         view_ref = self.env.ref('plastinorte.register_expense_pos_form_control')
         view_id = view_ref.id if view_ref else False
 
-      #  return {
-             #  'context': {},
-      #         'view_type': 'form',
-      #         'view_mode': 'form',
-      #         'res_model': 'hr.expense',
-             #  'res_id': False,
-      #         'view': [(view_id,'form')],
-      #         'type': 'ir.actions.act_window',
-      #         'target': 'new',
-      #        }
-
         return {
                'context': {},
                'view_type': 'form',
@@ -120,4 +98,3 @@ class pos_session(models.Model):
                'type': 'ir.actions.act_window',
                'target': 'new',
               }
-
