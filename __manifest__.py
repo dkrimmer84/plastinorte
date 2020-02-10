@@ -27,6 +27,8 @@
 	    'views/fleet.xml',
 	    'views/report_deliveryslip.xml',
 	    'views/report_saleorder.xml',
+        'views/report_purchaseorder.xml',
+        'views/report_quotationrequest.xml',
         'views/point_of_sale.xml',
     ],
     'qweb': [

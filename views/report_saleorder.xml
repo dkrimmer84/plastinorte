@@ -30,7 +30,7 @@
                 <div class="page" style="font-size:12px;">
                     <div class="oe_structure"/>
 
-                    <h2>
+                    <h2 style="margin-top: 20px;">
                         <t t-if="not (env.context.get('proforma', False) or is_pro_forma)">
                             <p style="font-size:20px;padding-top: 15px; font-weight:bold;" t-if="doc.state not in ['draft','sent']">Orden de Venta # <span style="font-size: 20px; font-weight: bold;" t-field="doc.name"/></p>
                             <p style="font-size:20px; padding-top: 15px; font-weight: bold;" t-if="doc.state in ['draft','sent']">Solicitud de Cotización # <span style="font-size: 20px; font-weight: bold;" t-field="doc.name"/></p>
@@ -41,7 +41,7 @@
                         
                     </h2>
 
-                    <div class="row mt32 mb32" id="informations">
+                    <div class="row mt32 mb32" id="informations" style="margin-top:10px !important; margin-bottom: 20px !important;">
                         <div t-if="doc.client_order_ref" class="col-auto mw-100 mb-2">
                             <strong>Your Reference:</strong>
                             <p class="m-0" t-field="doc.client_order_ref"/>
@@ -71,8 +71,8 @@
                     <!-- Is there a discount on at least one line? -->
                     <t t-set="display_discount" t-value="any([l.discount for l in doc.order_line])"/>
 
-                    <table class="table table-sm o_main_table">
-                        <thead>
+                    <table class="table table-sm o_main_table" style="font-size:11px;">
+                        <thead style="background: #efefef;">
                             <tr>
                                 <!-- TODO: remove in master -->
                                 <t t-set="colspan" t-value="5"/>
@@ -183,8 +183,8 @@
                                             </t>
                                         </tr>
                                     </t>
-                                    <tr class="border-black o_total">
-                                        <td><strong>Total</strong></td>
+                                    <tr class="border-black o_total" style="font-size: 18px;">
+                                        <td><strong style="font-size: 18px;">Total</strong></td>
                                         <td class="text-right">
                                             <span t-field="doc.amount_total"/>
                                         </td>
@@ -194,7 +194,7 @@
                         </div>
                     </div>
 
-                    <p t-field="doc.note" />
+                    <p t-field="doc.note" style="font-size:11px;"/>
                     <p t-if="doc.payment_term_id.note">
                         <span t-field="doc.payment_term_id.note"/>
                     </p>
