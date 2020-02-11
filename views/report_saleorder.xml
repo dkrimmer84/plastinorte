@@ -43,27 +43,27 @@
 
                     <div class="row mt32 mb32" id="informations" style="margin-top:10px !important; margin-bottom: 20px !important;">
                         <div t-if="doc.client_order_ref" class="col-auto mw-100 mb-2">
-                            <strong>Your Reference:</strong>
+                            <strong>Referencia:</strong>
                             <p class="m-0" t-field="doc.client_order_ref"/>
                         </div>
                         <div t-if="doc.confirmation_date and doc.state not in ['draft','sent']" class="col-auto mw-100 mb-2">
-                            <strong>Date Ordered:</strong>
+                            <strong>Fecha de la Orden:</strong>
                             <p class="m-0" t-field="doc.confirmation_date"/>
                         </div>
                         <div t-if="doc.date_order and doc.state in ['draft','sent']" class="col-auto mw-100 mb-2">
-                            <strong>Quotation Date:</strong>
+                            <strong>Fecha de cotización:</strong>
                             <p class="m-0" t-field="doc.date_order"/>
                         </div>
                         <div t-if="doc.user_id.name" class="col-auto mw-100 mb-2">
-                            <strong>Salesperson:</strong>
+                            <strong>Vendedor::</strong>
                             <p class="m-0" t-field="doc.user_id"/>
                         </div>
                         <div name="payment_term" t-if="doc.payment_term_id" class="col-auto mw-100 mb-2">
-                            <strong>Payment Terms:</strong>
+                            <strong>Términos de pago:</strong>
                             <p class="m-0" t-field="doc.payment_term_id"/>
                         </div>
                         <div t-if="doc.validity_date and doc.state in ['draft', 'sent']" class="col-auto mw-100 mb-2">
-                            <strong>Expiration Date:</strong>
+                            <strong>Plazo de pago:</strong>
                             <p class="m-0" t-field="doc.validity_date"/>
                         </div>
                     </div>
@@ -76,18 +76,18 @@
                             <tr>
                                 <!-- TODO: remove in master -->
                                 <t t-set="colspan" t-value="5"/>
-                                <th class="text-left">Description</th>
-                                <th class="text-right">Quantity</th>
-                                <th class="text-right">Unit Price</th>
+                                <th class="text-left">Descripción</th>
+                                <th class="text-right">Cantidad</th>
+                                <th class="text-right">Precio Unitario</th>
                                 <th t-if="display_discount" class="text-right" groups="sale.group_discount_per_so_line">
-                                    <span>Disc.(%)</span>
+                                    <span>Desc.(%)</span>
                                     <!-- TODO: remove in master -->
                                     <t t-set="colspan" t-value="colspan+1"/>
                                 </th>
                                 <th class="text-right">Taxes</th>
                                 <th class="text-right">
-                                    <t groups="account.group_show_line_subtotals_tax_excluded">Amount</t>
-                                    <t groups="account.group_show_line_subtotals_tax_included">Total Price</t>
+                                    <t groups="account.group_show_line_subtotals_tax_excluded">Subtotal</t>
+                                    <t groups="account.group_show_line_subtotals_tax_included">Total</t>
                                 </th>
                             </tr>
                         </thead>
@@ -199,13 +199,13 @@
                         <span t-field="doc.payment_term_id.note"/>
                     </p>
                     <p id="fiscal_position_remark" t-if="doc.fiscal_position_id and doc.fiscal_position_id.sudo().note">
-                        <strong>Fiscal Position Remark:</strong>
+                        <strong>Observación de posición fiscal:</strong>
                         <span t-field="doc.fiscal_position_id.sudo().note"/>
                     </p>
 
                     <div t-if="doc.signature" class="mt32 ml16 mr16" name="signature">
                         <div class="offset-8">
-                            <strong>Signature</strong>
+                            <strong>Firma</strong>
                         </div>
                         <div class="offset-8">
                             <img t-att-src="image_data_uri(doc.signature)" style="max-height: 4cm; max-width: 8cm;"/>
