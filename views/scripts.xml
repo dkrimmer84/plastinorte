@@ -4,7 +4,6 @@
         <template id="assets_backend" name="hotkeys_inherit assets"  inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                
-                <script type="text/javascript" src="/plastinorte/static/src/js/hotkeys.js"></script>
             </xpath>
         </template>
     </data>
