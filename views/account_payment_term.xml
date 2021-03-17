@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="view_payment_term_form" model="ir.ui.view">
+           <field name="inherit_id" ref="account.view_payment_term_form" />
+            <field name="model">account.payment.term</field>
+            <field name="arch" type="xml">
+		<field name="name" position="after">
+                    <field name="bypass_credit_check" groups="base.group_no_one" />
+		</field>
+            </field>
+        </record>
+    </data>
+</odoo>
