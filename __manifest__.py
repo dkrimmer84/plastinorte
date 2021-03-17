@@ -30,6 +30,7 @@
         'views/report_purchaseorder.xml',
         'views/report_quotationrequest.xml',
         'views/point_of_sale.xml',
+        'views/account_payment_term.xml'
     ],
     'qweb': [
         "static/src/xml/inherit.xml",
