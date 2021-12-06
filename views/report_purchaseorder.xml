@@ -35,8 +35,8 @@
                 <t t-if="o.picking_type_id.warehouse_id.partner_id.street2">
                     , <span t-field="o.picking_type_id.warehouse_id.partner_id.street2"/>
                 </t>
-                <t t-if="o.picking_type_id.warehouse_id.partner_id.xcity">
-                    , <span t-field="o.picking_type_id.warehouse_id.partner_id.xcity"/>
+                <t t-if="o.picking_type_id.warehouse_id.partner_id.city">
+                    , <span t-field="o.picking_type_id.warehouse_id.partner_id.city"/>
                 </t>
                 <t t-if="o.picking_type_id.warehouse_id.partner_id.state_id">
                     , <span t-field="o.picking_type_id.warehouse_id.partner_id.state_id"/>
